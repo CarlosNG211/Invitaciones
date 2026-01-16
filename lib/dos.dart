@@ -28,6 +28,606 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
 bool _debugMode = true;
+
+Widget _buildCodigoVestimenta() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.grey.shade100, Colors.blueGrey.shade50],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Swing(
+            duration: const Duration(milliseconds: 1500),
+            child: Icon(Icons.checkroom, color: const Color(0xFF7A9B8E), size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Código de Vestimenta',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF7A9B8E),
+              ),
+            ),
+          ),
+          const SizedBox(height: 25),
+          ZoomIn(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.info_outline, color: Colors.blue.shade600, size: 24),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Formal',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.red.shade200),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.block, color: Colors.red.shade600, size: 22),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            'Por favor evitar el color blanco',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: Colors.red.shade800,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 25),
+          BounceInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 700),
+            child: Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: Colors.orange.shade100,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.orange.shade300, width: 2),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.calendar_today, color: Colors.orange.shade800, size: 24),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Fecha límite de confirmación:',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '25 de Enero, 2026',
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange.shade900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildHeroSection() {
+  return Container(
+    height: 550,
+    decoration: const BoxDecoration(
+      color: Color(0xFFE8E4DC),
+      image: DecorationImage(
+        image: AssetImage('assets/1.jpeg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.black.withOpacity(0.4),
+            Colors.transparent,
+            const Color(0xFFF5F3EF),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FadeInDown(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'NOS CASAMOS',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 14,
+                letterSpacing: 4,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 600),
+            child: Text(
+              'Itzel & Oscar',
+              style: GoogleFonts.greatVibes(
+                color: Colors.white,
+                fontSize: 60,
+                fontWeight: FontWeight.w400,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 900),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '14 • FEBRERO • 2026',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xFF7A9B8E),
+                  fontSize: 16,
+                  letterSpacing: 3,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 40),
+          CustomPaint(
+            size: const Size(double.infinity, 40),
+            painter: TornPaperPainter(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildCountdown() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 400),
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 40),
+      child: Column(
+        children: [
+          SlideInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 600),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.access_time_rounded, color: const Color(0xFF7A9B8E), size: 24),
+                const SizedBox(width: 10),
+                Text(
+                  'FALTAN',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    letterSpacing: 3,
+                    color: const Color(0xFF7A9B8E),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 25),
+          StreamBuilder(
+            stream: Stream.periodic(const Duration(seconds: 1)),
+            builder: (context, snapshot) {
+              final targetDate = DateTime(2026, 2, 14, 11, 0);
+              final now = DateTime.now();
+              final difference = targetDate.difference(now);
+              
+              return ZoomIn(
+                duration: const Duration(milliseconds: 1200),
+                delay: const Duration(milliseconds: 800),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildTimeUnit(difference.inDays.toString(), 'Días'),
+                    _buildTimeUnit((difference.inHours % 24).toString(), 'horas'),
+                    _buildTimeUnit((difference.inMinutes % 60).toString(), 'minutos'),
+                    _buildTimeUnit((difference.inSeconds % 60).toString(), 'segundos'),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildNoviosSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, Colors.pink.shade50],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Pulse(
+            duration: const Duration(milliseconds: 1500),
+            child: Icon(Icons.favorite, color: Colors.pink.shade300, size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Los Novios',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF7A9B8E),
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          Row(
+            children: [
+              Expanded(
+                child: SlideInLeft(
+                  duration: const Duration(milliseconds: 1000),
+                  delay: const Duration(milliseconds: 500),
+                  child: _buildNovioCard(
+                    'Itzel Yarani',
+                    'Del Villar Ramírez',
+                    Icons.female,
+                    Colors.pink.shade100,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 15),
+              Pulse(
+                duration: const Duration(milliseconds: 1500),
+                infinite: true,
+                child: Icon(Icons.favorite, color: Colors.red.shade300, size: 30),
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: SlideInRight(
+                  duration: const Duration(milliseconds: 1000),
+                  delay: const Duration(milliseconds: 500),
+                  child: _buildNovioCard(
+                    'Oscar',
+                    'Quintana Lozano',
+                    Icons.male,
+                    Colors.blue.shade100,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildPadresSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          BounceInDown(
+            duration: const Duration(milliseconds: 1200),
+            child: Icon(Icons.family_restroom, color: const Color(0xFF7A9B8E), size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Con la Bendición de Nuestros Padres',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF7A9B8E),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 30),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: _buildPadreItem('Padres de la Novia', [
+              'Lourdes Ramírez Medina',
+              'José Víctor Del Villar Flores',
+            ], Icons.people),
+          ),
+          const SizedBox(height: 25),
+          SlideInRight(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: _buildPadreItem('Padres del Novio', [
+              'Petra Lozano Salcedo',
+              'Arturo Eduardo Quintana Briseño',
+            ], Icons.people_outline),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildPadrinosSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.amber.shade50, Colors.orange.shade50],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Spin(
+            duration: const Duration(milliseconds: 2000),
+            child: Icon(Icons.stars, color: Colors.amber.shade700, size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Nuestros Padrinos',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF7A9B8E),
+              ),
+            ),
+          ),
+          const SizedBox(height: 25),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: _buildPadrinoCard('Víctor Uriel Del Villar Ramírez'),
+          ),
+          const SizedBox(height: 15),
+          SlideInRight(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: _buildPadrinoCard('René Ali López Nieva'),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildItinerarioSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          BounceInDown(
+            duration: const Duration(milliseconds: 1200),
+            child: Icon(Icons.event_note, color: const Color(0xFF7A9B8E), size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Itinerario del Día',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF7A9B8E),
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: _buildEventoCard(
+              '11:00 AM',
+              'Ceremonia Religiosa',
+              'Parroquia de la Asunción y del Sagrado Corazón',
+              'Apan, Hidalgo',
+              Icons.church,
+              Colors.purple.shade100,
+              'https://maps.app.goo.gl/TQzfessn7mXviAaQA',
+            ),
+          ),
+          const SizedBox(height: 20),
+          SlideInRight(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: _buildEventoCard(
+              '2:00 PM',
+              'Recepción',
+              'Salón "La Cabaña"',
+              'Capacidad: 150-200 personas',
+              Icons.celebration,
+              Colors.green.shade100,
+              'https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7',
+            ),
+          ),
+          const SizedBox(height: 20),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 900),
+            child: _buildEventoCard(
+              '3:00 PM',
+              'Ceremonia Civil',
+              'Salón "La Cabaña"',
+              '',
+              Icons.gavel,
+              Colors.blue.shade100,
+              null,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+Widget _buildDivider() {
+  return FadeIn(
+    duration: const Duration(milliseconds: 800),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Row(
+        children: [
+          Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Pulse(
+              duration: const Duration(milliseconds: 2000),
+              infinite: true,
+              child: Icon(Icons.favorite, color: Colors.pink.shade200, size: 20),
+            ),
+          ),
+          Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
+        ],
+      ),
+    ),
+  );
+}
+
+
 Future<void> _cargarInvitacionDesdeUrl() async {
   WidgetsBinding.instance.addPostFrameCallback((_) async {
     String? invitacionId;
@@ -794,9 +1394,10 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
               children: [
                 _buildHeroSection(),
                 _buildCountdown(),
-                _buildDivider(),
                 _buildNoviosSection(),
-                _buildDivider(),
+                Container(
+                  height: 50,
+                ),
                 _buildPadresSection(),
                 _buildDivider(),
                 _buildPadrinosSection(),
@@ -835,141 +1436,7 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildHeroSection() {
-    return FadeIn(
-      child: Container(
-        height: 550,
-        decoration: const BoxDecoration(
-          color: Color(0xFFE8E4DC),
-          image: DecorationImage(
-            image: AssetImage('assets/1.jpeg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.4),
-                Colors.transparent,
-                const Color(0xFFF5F3EF),
-              ],
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FadeInDown(
-                delay: const Duration(milliseconds: 500),
-                child: Text(
-                  'NOS CASAMOS',
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    letterSpacing: 4,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-              ZoomIn(
-                delay: const Duration(milliseconds: 700),
-                child: Text(
-                  'Itzel & Oscar',
-                  style: GoogleFonts.greatVibes(
-                    color: Colors.white,
-                    fontSize: 60,
-                    fontWeight: FontWeight.w400,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 10.0,
-                        color: Colors.black.withOpacity(0.5),
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              FadeInUp(
-                delay: const Duration(milliseconds: 900),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.95),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '14 • FEBRERO • 2026',
-                    style: GoogleFonts.poppins(
-                      color: const Color(0xFF7A9B8E),
-                      fontSize: 16,
-                      letterSpacing: 3,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-              CustomPaint(
-                size: const Size(double.infinity, 40),
-                painter: TornPaperPainter(),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
   
-  Widget _buildCountdown() {
-    return FadeInUp(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.access_time_rounded, color: const Color(0xFF7A9B8E), size: 24),
-                const SizedBox(width: 10),
-                Text(
-                  'FALTAN',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    letterSpacing: 3,
-                    color: const Color(0xFF7A9B8E),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 25),
-            StreamBuilder(
-              stream: Stream.periodic(const Duration(seconds: 1)),
-              builder: (context, snapshot) {
-                final targetDate = DateTime(2026, 2, 14, 11, 0);
-                final now = DateTime.now();
-                final difference = targetDate.difference(now);
-                
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTimeUnit(difference.inDays.toString(), 'Días'),
-                    _buildTimeUnit((difference.inHours % 24).toString(), 'horas'),
-                    _buildTimeUnit((difference.inMinutes % 60).toString(), 'minutos'),
-                    _buildTimeUnit((difference.inSeconds % 60).toString(), 'segundos'),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildTimeUnit(String value, String label) {
     return Container(
@@ -1010,83 +1477,7 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Row(
-        children: [
-          Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Icon(Icons.favorite, color: Colors.pink.shade200, size: 20),
-          ),
-          Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
-        ],
-      ),
-    );
-  }
   
-  Widget _buildNoviosSection() {
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.white, Colors.pink.shade50],
-          ),
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(Icons.favorite, color: Colors.pink.shade300, size: 50),
-            const SizedBox(height: 20),
-            Text(
-              'Los Novios',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
-              ),
-            ),
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildNovioCard(
-                    'Itzel Yarani',
-                    'Del Villar Ramírez',
-                    Icons.female,
-                    Colors.pink.shade100,
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Icon(Icons.favorite, color: Colors.red.shade300, size: 30),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: _buildNovioCard(
-                    'Oscar',
-                    'Quintana Lozano',
-                    Icons.male,
-                    Colors.blue.shade100,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildNovioCard(String nombre, String apellido, IconData icono, Color color) {
     return Container(
@@ -1123,50 +1514,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildPadresSection() {
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(Icons.family_restroom, color: const Color(0xFF7A9B8E), size: 50),
-            const SizedBox(height: 20),
-            Text(
-              'Con la Bendición de Nuestros Padres',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-            _buildPadreItem('Padres de la Novia', [
-              'Lourdes Ramírez Medina',
-              'José Víctor Del Villar Flores',
-            ], Icons.people),
-            const SizedBox(height: 25),
-            _buildPadreItem('Padres del Novio', [
-              'Petra Lozano Salcedo',
-              'Arturo Eduardo Quintana Briseño',
-            ], Icons.people_outline),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildPadreItem(String titulo, List<String> nombres, IconData icono) {
     return Container(
@@ -1210,47 +1557,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildPadrinosSection() {
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.amber.shade50, Colors.orange.shade50],
-          ),
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(Icons.stars, color: Colors.amber.shade700, size: 50),
-            const SizedBox(height: 20),
-            Text(
-              'Nuestros Padrinos',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 28,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
-              ),
-            ),
-            const SizedBox(height: 25),
-            _buildPadrinoCard('Víctor Uriel Del Villar Ramírez'),
-            const SizedBox(height: 15),
-            _buildPadrinoCard('René Ali López Nieva'),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildPadrinoCard(String nombre) {
     return Container(
@@ -1280,69 +1586,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildItinerarioSection() {
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(Icons.event_note, color: const Color(0xFF7A9B8E), size: 50),
-            const SizedBox(height: 20),
-            Text(
-              'Itinerario del Día',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 28,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
-              ),
-            ),
-            const SizedBox(height: 30),
-            _buildEventoCard(
-              '11:00 AM',
-              'Ceremonia Religiosa',
-              'Parroquia de la Asunción y del Sagrado Corazón',
-              'Apan, Hidalgo',
-              Icons.church,
-              Colors.purple.shade100,
-              'https://maps.app.goo.gl/TQzfessn7mXviAaQA',
-            ),
-            const SizedBox(height: 20),
-            _buildEventoCard(
-              '2:00 PM',
-              'Recepción',
-              'Salón "La Cabaña"',
-              'Capacidad: 150-200 personas',
-              Icons.celebration,
-              Colors.green.shade100,
-              'https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7',
-            ),
-            const SizedBox(height: 20),
-            _buildEventoCard(
-              '3:00 PM',
-              'Ceremonia Civil',
-              'Salón "La Cabaña"',
-              '',
-              Icons.gavel,
-              Colors.blue.shade100,
-              null,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildEventoCard(String hora, String titulo, String lugar, String detalle, 
                           IconData icono, Color color, String? mapsUrl) {
@@ -1446,134 +1689,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
   
-  Widget _buildCodigoVestimenta() {
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.grey.shade100, Colors.blueGrey.shade50],
-          ),
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(Icons.checkroom, color: const Color(0xFF7A9B8E), size: 50),
-            const SizedBox(height: 20),
-            Text(
-              'Código de Vestimenta',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
-              ),
-            ),
-            const SizedBox(height: 25),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.info_outline, color: Colors.blue.shade600, size: 24),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Formal',
-                        style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade800,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.shade200),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.block, color: Colors.red.shade600, size: 22),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Por favor evitar el color blanco',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.red.shade800,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 25),
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.orange.shade100,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.orange.shade300, width: 2),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.calendar_today, color: Colors.orange.shade800, size: 24),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Fecha límite de confirmación:',
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '25 de Febrero, 2026',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange.shade900,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildConfirmacionSection() {
     final yaConfirmada = _invitacionCargada && 
