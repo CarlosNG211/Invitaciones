@@ -29,7 +29,27 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   late AnimationController _floatingController;
 
   
-  
+  Future<void> _cargarInvitacionDesdeUrl() async {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    final uri = Uri.base;
+    
+    // Intentar obtener el ID del parámetro de query 'id'
+    String? invitacionId = uri.queryParameters['id'];
+    
+    // Si no hay parámetro 'id', intentar con la ruta antigua
+    if (invitacionId == null || invitacionId.isEmpty) {
+      if (uri.pathSegments.isNotEmpty && 
+          uri.pathSegments.length > 1 && 
+          uri.pathSegments[0] == 'invitacion') {
+        invitacionId = uri.pathSegments[1];
+      }
+    }
+    
+    if (invitacionId != null && invitacionId.isNotEmpty) {
+      await _cargarDatosInvitacion(invitacionId);
+    }
+  });
+}
   @override
   void initState() {
     super.initState();
@@ -61,20 +81,6 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
     }
   }
   
-  Future<void> _cargarInvitacionDesdeUrl() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final uri = Uri.base;
-      final invitacionId = uri.pathSegments.isNotEmpty && 
-                           uri.pathSegments.length > 1 && 
-                           uri.pathSegments[0] == 'invitacion'
-          ? uri.pathSegments[1]
-          : null;
-      
-      if (invitacionId != null && invitacionId.isNotEmpty) {
-        await _cargarDatosInvitacion(invitacionId);
-      }
-    });
-  }
   
   Future<void> _cargarDatosInvitacion(String invitacionId) async {
     try {
