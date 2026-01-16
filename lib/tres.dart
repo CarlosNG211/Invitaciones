@@ -21,7 +21,8 @@ class _TresState extends State<Tres> with SingleTickerProviderStateMixin {
   
   void _mostrarDialogoLink(String invitacionId) {
   // Cambiado el formato del link para usar el parámetro 'id' en la ruta 'dos'
-  final link = 'https://invitaciones-indol-sigma.vercel.app/#/dos?id=$invitacionId';
+   final link = 'https://invitaciones-indol-sigma.vercel.app/#/dos?id=$invitacionId';
+
   
   showDialog(
     context: context,
@@ -170,7 +171,7 @@ class _TresState extends State<Tres> with SingleTickerProviderStateMixin {
 
 void _verDetalles(Map<String, dynamic> invitacion) {
   // Cambiado el formato del link
-  final link = 'https://invitaciones-indol-sigma.vercel.app/#/dos?id=${invitacion['id']}';
+   final link = 'https://invitaciones-indol-sigma.vercel.app/#/dos?id=${invitacion['id']}';
   
   showDialog(
     context: context,

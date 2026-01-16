@@ -27,40 +27,202 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   Map<String, dynamic>? _datosInvitacion;
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
+bool _debugMode = true; // Para ver logs en consola
 
+@override
+void initState() {
+  super.initState();
+  _checkUploadDate();
+  _cargarInvitacionDesdeUrl();
   
-  Future<void> _cargarInvitacionDesdeUrl() async {
+  _floatingController = AnimationController(
+    duration: const Duration(seconds: 3),
+    vsync: this,
+  )..repeat(reverse: true);
+}
+
+// REEMPLAZA ESTA FUNCIÓN COMPLETA
+Future<void> _cargarInvitacionDesdeUrl() async {
   WidgetsBinding.instance.addPostFrameCallback((_) async {
-    final uri = Uri.base;
+    String? invitacionId;
     
-    // Intentar obtener el ID del parámetro de query 'id'
-    String? invitacionId = uri.queryParameters['id'];
+    // Método 1: Leer de los argumentos de la ruta
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null && args is Map) {
+      invitacionId = args['id'] as String?;
+      if (_debugMode) print('ID desde argumentos de ruta: $invitacionId');
+    }
     
-    // Si no hay parámetro 'id', intentar con la ruta antigua
+    // Método 2: Leer de Uri.base (query parameters)
     if (invitacionId == null || invitacionId.isEmpty) {
-      if (uri.pathSegments.isNotEmpty && 
-          uri.pathSegments.length > 1 && 
-          uri.pathSegments[0] == 'invitacion') {
-        invitacionId = uri.pathSegments[1];
+      final uri = Uri.base;
+      invitacionId = uri.queryParameters['id'];
+      if (_debugMode) {
+        print('URI completo: $uri');
+        print('Query params: ${uri.queryParameters}');
+        print('ID desde query params: $invitacionId');
       }
     }
     
+    // Método 3: Leer de la ruta antigua (pathSegments)
+    if (invitacionId == null || invitacionId.isEmpty) {
+      final uri = Uri.base;
+      if (uri.pathSegments.isNotEmpty) {
+        if (_debugMode) print('Path segments: ${uri.pathSegments}');
+        
+        // Buscar 'invitacion' seguido del ID
+        for (int i = 0; i < uri.pathSegments.length - 1; i++) {
+          if (uri.pathSegments[i] == 'invitacion') {
+            invitacionId = uri.pathSegments[i + 1];
+            if (_debugMode) print('ID desde path segments: $invitacionId');
+            break;
+          }
+        }
+        
+        // Si aún no encontramos el ID, intentar con 'dos'
+        if (invitacionId == null || invitacionId.isEmpty) {
+          for (int i = 0; i < uri.pathSegments.length - 1; i++) {
+            if (uri.pathSegments[i] == 'dos' && i + 1 < uri.pathSegments.length) {
+              invitacionId = uri.pathSegments[i + 1];
+              if (_debugMode) print('ID desde dos path: $invitacionId');
+              break;
+            }
+          }
+        }
+      }
+    }
+    
+    // Método 4: Leer del fragment (#)
+    if (invitacionId == null || invitacionId.isEmpty) {
+      final fragment = Uri.base.fragment;
+      if (fragment.isNotEmpty) {
+        if (_debugMode) print('Fragment: $fragment');
+        
+        // Parsear el fragment como URI
+        final fragmentUri = Uri.parse(fragment);
+        invitacionId = fragmentUri.queryParameters['id'];
+        if (_debugMode) print('ID desde fragment query: $invitacionId');
+        
+        // Si no hay query params en el fragment, intentar con path
+        if (invitacionId == null || invitacionId.isEmpty) {
+          final fragmentParts = fragment.split('/');
+          if (_debugMode) print('Fragment parts: $fragmentParts');
+          
+          for (int i = 0; i < fragmentParts.length - 1; i++) {
+            if (fragmentParts[i] == 'dos' || fragmentParts[i] == 'invitacion') {
+              final nextPart = fragmentParts[i + 1];
+              // Remover query string si existe
+              invitacionId = nextPart.split('?')[0];
+              if (_debugMode) print('ID desde fragment parts: $invitacionId');
+              break;
+            }
+          }
+        }
+      }
+    }
+    
+    if (_debugMode) print('ID final encontrado: $invitacionId');
+    
     if (invitacionId != null && invitacionId.isNotEmpty) {
       await _cargarDatosInvitacion(invitacionId);
+    } else {
+      if (_debugMode) print('No se encontró ID de invitación');
+      // Mostrar un mensaje informativo al usuario
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.white),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text('Visualizando invitación general. Para ver una invitación específica, usa el enlace proporcionado.'),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.blue.shade700,
+            duration: const Duration(seconds: 5),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
     }
   });
 }
-  @override
-  void initState() {
-    super.initState();
-    _checkUploadDate();
-    _cargarInvitacionDesdeUrl();
+
+// Esta función se mantiene igual, solo asegúrate de que esté presente
+Future<void> _cargarDatosInvitacion(String invitacionId) async {
+  try {
+    if (_debugMode) print('Intentando cargar invitación: $invitacionId');
     
-    _floatingController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat(reverse: true);
+    final doc = await FirebaseFirestore.instance
+        .collection('invitaciones')
+        .doc(invitacionId)
+        .get();
+    
+    if (_debugMode) print('Documento existe: ${doc.exists}');
+    
+    if (doc.exists) {
+      final datos = doc.data()!;
+      if (_debugMode) print('Datos cargados: $datos');
+      
+      if (datos['confirmado'] == true) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.white),
+                SizedBox(width: 10),
+                Expanded(child: Text('Esta invitación ya fue confirmada anteriormente')),
+              ],
+            ),
+            backgroundColor: Colors.orange.shade700,
+            duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
+      }
+      
+      setState(() {
+        _invitacionId = invitacionId;
+        _datosInvitacion = datos;
+        _invitacionCargada = true;
+        _nombreController.text = datos['nombre'] ?? '';
+        _lugaresController.text = datos['lugaresAsignados'].toString();
+      });
+      
+      if (_debugMode) print('Estado actualizado correctamente');
+    } else {
+      if (_debugMode) print('Documento no encontrado');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Invitación no encontrada'),
+            ],
+          ),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    }
+  } catch (e) {
+    if (_debugMode) print('Error al cargar invitación: $e');
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al cargar invitación: $e')),
+    );
   }
+}
+
+
   
   @override
   void dispose() {
@@ -82,66 +244,6 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   }
   
   
-  Future<void> _cargarDatosInvitacion(String invitacionId) async {
-    try {
-      final doc = await FirebaseFirestore.instance
-          .collection('invitaciones')
-          .doc(invitacionId)
-          .get();
-      
-      if (doc.exists) {
-        final datos = doc.data()!;
-        
-        if (datos['confirmado'] == true) {
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Row(
-                children: [
-                  Icon(Icons.info_outline, color: Colors.white),
-                  SizedBox(width: 10),
-                  Expanded(child: Text('Esta invitación ya fue confirmada anteriormente')),
-                ],
-              ),
-              backgroundColor: Colors.orange.shade700,
-              duration: const Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          );
-        }
-        
-        setState(() {
-          _invitacionId = invitacionId;
-          _datosInvitacion = datos;
-          _invitacionCargada = true;
-          _nombreController.text = datos['nombre'] ?? '';
-          _lugaresController.text = datos['lugaresAsignados'].toString();
-        });
-      } else {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.error_outline, color: Colors.white),
-                SizedBox(width: 10),
-                Text('Invitación no encontrada'),
-              ],
-            ),
-            backgroundColor: Colors.red.shade700,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar invitación: $e')),
-      );
-    }
-  }
   
   Future<void> _abrirMaps(String url) async {
     final Uri uri = Uri.parse(url);

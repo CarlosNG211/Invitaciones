@@ -33,13 +33,46 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Itzel & Oscar',
       debugShowCheckedModeBanner: false,
-      title: 'Independientes',
-      initialRoute: '/dos',
-      routes: {
-        '/dos': (context) => const Dos(),
-        'tres': (context) => const Tres(),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      // Usar onGenerateRoute en lugar de routes
+      onGenerateRoute: (settings) {
+        // Extraer la ruta y los parámetros
+        final uri = Uri.parse(settings.name ?? '/');
+        
+        print('Navegando a: ${settings.name}');
+        print('Path: ${uri.path}');
+        print('Query params: ${uri.queryParameters}');
+        
+        // Ruta principal
+        if (uri.path == '/' || uri.path.isEmpty) {
+          return MaterialPageRoute(builder: (_) => const Dos());
+        }
+        
+        // Ruta 'dos' con o sin parámetros
+        if (uri.path == '/dos') {
+          return MaterialPageRoute(
+            builder: (_) => const Dos(),
+            settings: RouteSettings(
+              name: '/dos',
+              arguments: uri.queryParameters,
+            ),
+          );
+        }
+        
+        // Ruta 'tres' (admin)
+        if (uri.path == 'tres') {
+          return MaterialPageRoute(builder: (_) => const Tres());
+        }
+        
+        // Ruta por defecto
+        return MaterialPageRoute(builder: (_) => const Dos());
       },
+      initialRoute: '/dos',
     );
   }
 }
