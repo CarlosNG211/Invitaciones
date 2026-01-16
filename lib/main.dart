@@ -29,50 +29,64 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Itzel & Oscar',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      // Usar onGenerateRoute en lugar de routes
-      onGenerateRoute: (settings) {
-        // Extraer la ruta y los parámetros
-        final uri = Uri.parse(settings.name ?? '/');
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Itzel & Oscar',
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.green,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
+    onGenerateRoute: (settings) {
+      print('=== ROUTE DEBUG ===');
+      print('Settings name: ${settings.name}');
+      print('Settings arguments: ${settings.arguments}');
+      
+      // En Flutter Web con hash routing, la ruta completa viene en settings.name
+      // Puede ser algo como: "/dos?id=xxx" o simplemente "/dos"
+      final uri = Uri.parse(settings.name ?? '/');
+      print('Parsed URI path: ${uri.path}');
+      print('Parsed URI query: ${uri.queryParameters}');
+      
+      // Ruta para 'dos' (invitaciones)
+      if (uri.path == '/dos' || uri.path == 'dos') {
+        final queryParams = uri.queryParameters;
+        print('Query params para dos: $queryParams');
         
-        print('Navegando a: ${settings.name}');
-        print('Path: ${uri.path}');
-        print('Query params: ${uri.queryParameters}');
-        
-        // Ruta principal
-        if (uri.path == '/' || uri.path.isEmpty) {
-          return MaterialPageRoute(builder: (_) => const Dos());
-        }
-        
-        // Ruta 'dos' con o sin parámetros
-        if (uri.path == '/dos') {
-          return MaterialPageRoute(
-            builder: (_) => const Dos(),
-            settings: RouteSettings(
-              name: '/dos',
-              arguments: uri.queryParameters,
-            ),
-          );
-        }
-        
-        // Ruta 'tres' (admin)
-        if (uri.path == 'tres') {
-          return MaterialPageRoute(builder: (_) => const Tres());
-        }
-        
-        // Ruta por defecto
-        return MaterialPageRoute(builder: (_) => const Dos());
-      },
-      initialRoute: '/dos',
-    );
-  }
+        return MaterialPageRoute(
+          builder: (_) => const Dos(),
+          settings: RouteSettings(
+            name: '/dos',
+            arguments: queryParams.isNotEmpty ? queryParams : null,
+          ),
+        );
+      }
+      
+      // Ruta para 'tres' (admin)
+      if (uri.path == '/tres' || uri.path == 'tres') {
+        return MaterialPageRoute(
+          builder: (_) => const Tres(),
+          settings: const RouteSettings(name: '/tres'),
+        );
+      }
+      
+      // Ruta raíz - redirigir a 'dos'
+      if (uri.path == '/' || uri.path.isEmpty) {
+        return MaterialPageRoute(
+          builder: (_) => const Dos(),
+          settings: const RouteSettings(name: '/'),
+        );
+      }
+      
+      // Ruta por defecto
+      print('Ruta no reconocida, usando default');
+      return MaterialPageRoute(
+        builder: (_) => const Dos(),
+        settings: const RouteSettings(name: '/'),
+      );
+    },
+    initialRoute: '/',
+  );
+}
 }

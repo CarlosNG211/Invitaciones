@@ -27,97 +27,51 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   Map<String, dynamic>? _datosInvitacion;
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
-bool _debugMode = true; // Para ver logs en consola
-
-@override
-void initState() {
-  super.initState();
-  _checkUploadDate();
-  _cargarInvitacionDesdeUrl();
-  
-  _floatingController = AnimationController(
-    duration: const Duration(seconds: 3),
-    vsync: this,
-  )..repeat(reverse: true);
-}
-
-// REEMPLAZA ESTA FUNCIÓN COMPLETA
+bool _debugMode = true;
 Future<void> _cargarInvitacionDesdeUrl() async {
   WidgetsBinding.instance.addPostFrameCallback((_) async {
     String? invitacionId;
     
-    // Método 1: Leer de los argumentos de la ruta
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args != null && args is Map) {
-      invitacionId = args['id'] as String?;
-      if (_debugMode) print('ID desde argumentos de ruta: $invitacionId');
+    // Obtener la URI completa
+    final uri = Uri.base;
+    if (_debugMode) {
+      print('=== DEBUG URL ===');
+      print('URI completo: $uri');
+      print('Path: ${uri.path}');
+      print('Fragment: ${uri.fragment}');
+      print('Query params directos: ${uri.queryParameters}');
     }
     
-    // Método 2: Leer de Uri.base (query parameters)
-    if (invitacionId == null || invitacionId.isEmpty) {
-      final uri = Uri.base;
-      invitacionId = uri.queryParameters['id'];
-      if (_debugMode) {
-        print('URI completo: $uri');
-        print('Query params: ${uri.queryParameters}');
-        print('ID desde query params: $invitacionId');
-      }
-    }
+    // Método 1: Intentar leer directamente de query parameters
+    invitacionId = uri.queryParameters['id'];
+    if (_debugMode) print('ID desde query directo: $invitacionId');
     
-    // Método 3: Leer de la ruta antigua (pathSegments)
-    if (invitacionId == null || invitacionId.isEmpty) {
-      final uri = Uri.base;
-      if (uri.pathSegments.isNotEmpty) {
-        if (_debugMode) print('Path segments: ${uri.pathSegments}');
-        
-        // Buscar 'invitacion' seguido del ID
-        for (int i = 0; i < uri.pathSegments.length - 1; i++) {
-          if (uri.pathSegments[i] == 'invitacion') {
-            invitacionId = uri.pathSegments[i + 1];
-            if (_debugMode) print('ID desde path segments: $invitacionId');
-            break;
-          }
-        }
-        
-        // Si aún no encontramos el ID, intentar con 'dos'
-        if (invitacionId == null || invitacionId.isEmpty) {
-          for (int i = 0; i < uri.pathSegments.length - 1; i++) {
-            if (uri.pathSegments[i] == 'dos' && i + 1 < uri.pathSegments.length) {
-              invitacionId = uri.pathSegments[i + 1];
-              if (_debugMode) print('ID desde dos path: $invitacionId');
-              break;
-            }
-          }
-        }
-      }
-    }
-    
-    // Método 4: Leer del fragment (#)
-    if (invitacionId == null || invitacionId.isEmpty) {
-      final fragment = Uri.base.fragment;
-      if (fragment.isNotEmpty) {
-        if (_debugMode) print('Fragment: $fragment');
-        
-        // Parsear el fragment como URI
-        final fragmentUri = Uri.parse(fragment);
-        invitacionId = fragmentUri.queryParameters['id'];
+    // Método 2: Parsear el fragment (lo más común en Flutter Web con hash routing)
+    if ((invitacionId == null || invitacionId.isEmpty) && uri.fragment.isNotEmpty) {
+      final fragment = uri.fragment;
+      if (_debugMode) print('Procesando fragment: $fragment');
+      
+      // El fragment puede venir como: "/dos?id=xxx" o "dos?id=xxx"
+      // Remover el slash inicial si existe
+      final cleanFragment = fragment.startsWith('/') ? fragment.substring(1) : fragment;
+      
+      // Dividir en path y query string
+      final parts = cleanFragment.split('?');
+      if (parts.length > 1) {
+        // Parsear los query parameters del fragment
+        final queryString = parts[1];
+        final queryParams = Uri.splitQueryString(queryString);
+        invitacionId = queryParams['id'];
         if (_debugMode) print('ID desde fragment query: $invitacionId');
-        
-        // Si no hay query params en el fragment, intentar con path
-        if (invitacionId == null || invitacionId.isEmpty) {
-          final fragmentParts = fragment.split('/');
-          if (_debugMode) print('Fragment parts: $fragmentParts');
-          
-          for (int i = 0; i < fragmentParts.length - 1; i++) {
-            if (fragmentParts[i] == 'dos' || fragmentParts[i] == 'invitacion') {
-              final nextPart = fragmentParts[i + 1];
-              // Remover query string si existe
-              invitacionId = nextPart.split('?')[0];
-              if (_debugMode) print('ID desde fragment parts: $invitacionId');
-              break;
-            }
-          }
-        }
+      }
+    }
+    
+    // Método 3: Leer de los argumentos de la ruta (RouteSettings)
+    if ((invitacionId == null || invitacionId.isEmpty)) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null && args is Map) {
+        invitacionId = args['id'] as String?;
+        if (_debugMode) print('ID desde argumentos de ruta: $invitacionId');
       }
     }
     
@@ -127,7 +81,6 @@ Future<void> _cargarInvitacionDesdeUrl() async {
       await _cargarDatosInvitacion(invitacionId);
     } else {
       if (_debugMode) print('No se encontró ID de invitación');
-      // Mostrar un mensaje informativo al usuario
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -151,7 +104,19 @@ Future<void> _cargarInvitacionDesdeUrl() async {
   });
 }
 
-// Esta función se mantiene igual, solo asegúrate de que esté presente
+
+@override
+void initState() {
+  super.initState();
+  _checkUploadDate();
+  _cargarInvitacionDesdeUrl();
+  
+  _floatingController = AnimationController(
+    duration: const Duration(seconds: 3),
+    vsync: this,
+  )..repeat(reverse: true);
+}
+
 Future<void> _cargarDatosInvitacion(String invitacionId) async {
   try {
     if (_debugMode) print('Intentando cargar invitación: $invitacionId');
