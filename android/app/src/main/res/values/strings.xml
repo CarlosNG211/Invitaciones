@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Idely</string>
+    <string name="default_web_client_id">980858860861-e3718c457nkb6bjacrhajo3akopcjc57.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">https://chilitosramen-89223.firebaseapp.com/__/auth/handler</string>
+    <string name="fb_login_protocol_scheme">fbhttps://chilitosramen-89223.firebaseapp.com/__/auth/handler</string>
+    <string name="facebook_client_token">fe3a1ecf01f4ecaacad4696aefee0589</string>
+</resources>

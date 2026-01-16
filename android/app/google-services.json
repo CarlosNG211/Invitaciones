@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "800554704856",
+    "firebase_url": "https://bushidostore-eec8d-default-rtdb.firebaseio.com",
+    "project_id": "bushidostore-eec8d",
+    "storage_bucket": "bushidostore-eec8d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800554704856:android:99be8f4b26c58678505cad",
+        "android_client_info": {
+          "package_name": "com.bushido.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800554704856-0k03dc2544dss1om8eptp0caf2q6dd3b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bushido.dev",
+            "certificate_hash": "a3300dfab5cc6bcbbc2c11432a13174e32c3480c"
+          }
+        },
+        {
+          "client_id": "800554704856-fc7jp16oc0o02vg30e66kr5ase51n5o0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bushido.dev",
+            "certificate_hash": "9c4982e31c9094dd51857e69899a78b2a3c13896"
+          }
+        },
+        {
+          "client_id": "800554704856-n7c9r9c4ta9l8nd3uhf6pl3hh4247cvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy1zXiahBKujDaj5vnOrl5wHuqt-Q-k0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800554704856-n7c9r9c4ta9l8nd3uhf6pl3hh4247cvb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "800554704856-5fnl84j06betasfk0vfgavfi4fqdm1r5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bushido.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800554704856:android:b6ec3541fede4082505cad",
+        "android_client_info": {
+          "package_name": "com.invitaciones.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800554704856-n7c9r9c4ta9l8nd3uhf6pl3hh4247cvb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy1zXiahBKujDaj5vnOrl5wHuqt-Q-k0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800554704856-n7c9r9c4ta9l8nd3uhf6pl3hh4247cvb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "800554704856-5fnl84j06betasfk0vfgavfi4fqdm1r5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bushido.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

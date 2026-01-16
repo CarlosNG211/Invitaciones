@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pedidos_channel_name">Pedidos</string>
+    <string name="pedidos_channel_description">Notificaciones de estado de pedidos</string>
+    <string name="repartidor_channel_name">Repartidor</string>
+    <string name="repartidor_channel_description">Notificaciones del repartidor</string>
+    
+    <color name="notification_color">#FF6200EA</color>
+</resources>
