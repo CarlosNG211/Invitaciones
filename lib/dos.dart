@@ -27,9 +27,9 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   Map<String, dynamic>? _datosInvitacion;
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
-bool _debugMode = true;
+  bool _debugMode = true; 
 
-Widget _buildCodigoVestimenta() {
+  Widget _buildCodigoVestimenta() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
     delay: const Duration(milliseconds: 200),
@@ -40,7 +40,7 @@ Widget _buildCodigoVestimenta() {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.grey.shade100, Colors.blueGrey.shade50],
+          colors: [Colors.grey.shade100, Colors.pink.shade50],
         ),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
@@ -55,7 +55,7 @@ Widget _buildCodigoVestimenta() {
         children: [
           Swing(
             duration: const Duration(milliseconds: 1500),
-            child: Icon(Icons.checkroom, color: const Color(0xFF7A9B8E), size: 50),
+            child: Icon(Icons.checkroom, color: const Color(0xFFD946A6), size: 50),
           ),
           const SizedBox(height: 20),
           FadeInDown(
@@ -66,7 +66,7 @@ Widget _buildCodigoVestimenta() {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 26,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
+                color: const Color(0xFFD946A6),
               ),
             ),
           ),
@@ -174,6 +174,7 @@ Widget _buildCodigoVestimenta() {
     ),
   );
 }
+
 Widget _buildHeroSection() {
   return Container(
     height: 550,
@@ -245,7 +246,7 @@ Widget _buildHeroSection() {
               child: Text(
                 '14 • FEBRERO • 2026',
                 style: GoogleFonts.poppins(
-                  color: const Color(0xFF7A9B8E),
+                  color: const Color(0xFFD946A6),
                   fontSize: 16,
                   letterSpacing: 3,
                   fontWeight: FontWeight.w500,
@@ -263,6 +264,7 @@ Widget _buildHeroSection() {
     ),
   );
 }
+
 Widget _buildCountdown() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -277,14 +279,14 @@ Widget _buildCountdown() {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.access_time_rounded, color: const Color(0xFF7A9B8E), size: 24),
+                Icon(Icons.access_time_rounded, color: const Color(0xFFD946A6), size: 24),
                 const SizedBox(width: 10),
                 Text(
                   'FALTAN',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     letterSpacing: 3,
-                    color: const Color(0xFF7A9B8E),
+                    color: const Color(0xFFD946A6),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -319,6 +321,7 @@ Widget _buildCountdown() {
     ),
   );
 }
+
 Widget _buildNoviosSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -345,7 +348,7 @@ Widget _buildNoviosSection() {
         children: [
           Pulse(
             duration: const Duration(milliseconds: 1500),
-            child: Icon(Icons.favorite, color: Colors.pink.shade300, size: 50),
+            child: Icon(Icons.favorite, color: const Color(0xFFD946A6), size: 50),
           ),
           const SizedBox(height: 20),
           FadeInDown(
@@ -356,7 +359,7 @@ Widget _buildNoviosSection() {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 30,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
+                color: const Color(0xFFD946A6),
               ),
             ),
           ),
@@ -379,7 +382,7 @@ Widget _buildNoviosSection() {
               Pulse(
                 duration: const Duration(milliseconds: 1500),
                 infinite: true,
-                child: Icon(Icons.favorite, color: Colors.red.shade300, size: 30),
+                child: Icon(Icons.favorite, color: const Color(0xFFD946A6), size: 30),
               ),
               const SizedBox(width: 15),
               Expanded(
@@ -401,6 +404,7 @@ Widget _buildNoviosSection() {
     ),
   );
 }
+
 Widget _buildPadresSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -423,7 +427,7 @@ Widget _buildPadresSection() {
         children: [
           BounceInDown(
             duration: const Duration(milliseconds: 1200),
-            child: Icon(Icons.family_restroom, color: const Color(0xFF7A9B8E), size: 50),
+            child: Icon(Icons.family_restroom, color: const Color(0xFFD946A6), size: 50),
           ),
           const SizedBox(height: 20),
           FadeInDown(
@@ -434,7 +438,7 @@ Widget _buildPadresSection() {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
+                color: const Color(0xFFD946A6),
               ),
               textAlign: TextAlign.center,
             ),
@@ -462,6 +466,7 @@ Widget _buildPadresSection() {
     ),
   );
 }
+
 Widget _buildPadrinosSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -473,7 +478,7 @@ Widget _buildPadrinosSection() {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.amber.shade50, Colors.orange.shade50],
+          colors: [Colors.pink.shade50, Colors.purple.shade50],
         ),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
@@ -488,7 +493,7 @@ Widget _buildPadrinosSection() {
         children: [
           Spin(
             duration: const Duration(milliseconds: 2000),
-            child: Icon(Icons.stars, color: Colors.amber.shade700, size: 50),
+            child: Icon(Icons.stars, color: const Color(0xFFD946A6), size: 50),
           ),
           const SizedBox(height: 20),
           FadeInDown(
@@ -499,7 +504,7 @@ Widget _buildPadrinosSection() {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
+                color: const Color(0xFFD946A6),
               ),
             ),
           ),
@@ -520,6 +525,7 @@ Widget _buildPadrinosSection() {
     ),
   );
 }
+
 Widget _buildItinerarioSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -542,7 +548,7 @@ Widget _buildItinerarioSection() {
         children: [
           BounceInDown(
             duration: const Duration(milliseconds: 1200),
-            child: Icon(Icons.event_note, color: const Color(0xFF7A9B8E), size: 50),
+            child: Icon(Icons.event_note, color: const Color(0xFFD946A6), size: 50),
           ),
           const SizedBox(height: 20),
           FadeInDown(
@@ -553,7 +559,7 @@ Widget _buildItinerarioSection() {
               style: GoogleFonts.playfairDisplay(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF7A9B8E),
+                color: const Color(0xFFD946A6),
               ),
             ),
           ),
@@ -604,6 +610,7 @@ Widget _buildItinerarioSection() {
     ),
   );
 }
+
 Widget _buildDivider() {
   return FadeIn(
     duration: const Duration(milliseconds: 800),
@@ -617,7 +624,7 @@ Widget _buildDivider() {
             child: Pulse(
               duration: const Duration(milliseconds: 2000),
               infinite: true,
-              child: Icon(Icons.favorite, color: Colors.pink.shade200, size: 20),
+              child: Icon(Icons.favorite, color: const Color(0xFFD946A6), size: 20),
             ),
           ),
           Expanded(child: Divider(color: Colors.grey.shade300, thickness: 1)),
@@ -626,6 +633,678 @@ Widget _buildDivider() {
     ),
   );
 }
+
+Widget _buildTimeUnit(String value, String label) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 6),
+    padding: const EdgeInsets.all(15),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.08),
+          blurRadius: 10,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        Text(
+          value.padLeft(2, '0'),
+          style: GoogleFonts.playfairDisplay(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFFD946A6),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 11,
+            color: Colors.grey.shade600,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildPadreItem(String titulo, List<String> nombres, IconData icono) {
+  return Container(
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: const Color(0xFFF5F3EF),
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(color: const Color(0xFFE8E4DC)),
+    ),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icono, color: const Color(0xFFD946A6), size: 20),
+            const SizedBox(width: 10),
+            Text(
+              titulo,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFFD946A6),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        ...nombres.map((nombre) => Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Text(
+            nombre,
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              color: Colors.grey.shade700,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        )),
+      ],
+    ),
+  );
+}
+
+Widget _buildPadrinoCard(String nombre) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(color: const Color(0xFFD946A6), width: 2),
+    ),
+    child: Row(
+      children: [
+        Icon(Icons.workspace_premium, color: const Color(0xFFD946A6), size: 28),
+        const SizedBox(width: 15),
+        Expanded(
+          child: Text(
+            nombre,
+            style: GoogleFonts.poppins(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey.shade800,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildEventoCard(String hora, String titulo, String lugar, String detalle, 
+                        IconData icono, Color color, String? mapsUrl) {
+  return Container(
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: color.withOpacity(0.3),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: color, width: 2),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icono, color: Colors.white, size: 28),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    hora,
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFD946A6),
+                    ),
+                  ),
+                  Text(
+                    titulo,
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        Row(
+          children: [
+            Icon(Icons.location_on, size: 18, color: Colors.grey.shade600),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lugar,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  if (detalle.isNotEmpty)
+                    Text(
+                      detalle,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        if (mapsUrl != null) ...[
+          const SizedBox(height: 15),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _abrirMaps(mapsUrl),
+              icon: const Icon(Icons.map, size: 18),
+              label: const Text('VER EN MAPA'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD946A6),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+        ],
+      ],
+    ),
+  );
+}
+
+Widget _buildConfirmacionSection() {
+  final yaConfirmada = _invitacionCargada && 
+                        _datosInvitacion != null && 
+                        _datosInvitacion!['confirmado'] == true;
+  
+  return FadeInUp(
+    child: Container(
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: yaConfirmada 
+            ? [Colors.green.shade50, Colors.green.shade100]
+            : [Colors.white, const Color(0xFFF5F3EF)],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Column(
+              children: [
+                Icon(
+                  yaConfirmada ? Icons.check_circle : Icons.how_to_reg,
+                  color: yaConfirmada ? Colors.green.shade600 : const Color(0xFFD946A6),
+                  size: 60,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  yaConfirmada ? '¡Ya Confirmaste!' : 'Confirma tu Asistencia',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: yaConfirmada ? Colors.green.shade700 : const Color(0xFFD946A6),
+                  ),
+                ),
+                if (_invitacionCargada && _datosInvitacion != null) ...[
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: yaConfirmada
+                          ? [Colors.green.shade200, Colors.green.shade300]
+                          : [const Color(0xFFD946A6), const Color(0xFFC535A0)],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: (yaConfirmada ? Colors.green : const Color(0xFFD946A6)).withOpacity(0.3),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Lugares asignados para ti:',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.white.withOpacity(0.9),
+                            letterSpacing: 1,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          yaConfirmada 
+                            ? '${_datosInvitacion!['lugaresConfirmados']} de ${_datosInvitacion!['lugaresAsignados']}'
+                            : '${_datosInvitacion!['lugaresAsignados']}',
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),   ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+      const SizedBox(height: 30),
+      
+      if (yaConfirmada) ...[
+        Container(
+          padding: const EdgeInsets.all(25),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.green.shade300, width: 2),
+          ),
+          child: Column(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green.shade600, size: 60),
+              const SizedBox(height: 20),
+              Text(
+                'Tu asistencia ya fue confirmada',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey.shade800,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Confirmaste ${_datosInvitacion!['lugaresConfirmados']} lugares',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+              if (_datosInvitacion!['mensajeRespuesta'] != null &&
+                  _datosInvitacion!['mensajeRespuesta'].toString().isNotEmpty) ...[
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.message, size: 16, color: Colors.grey.shade600),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Tu mensaje:',
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        _datosInvitacion!['mensajeRespuesta'],
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ] else ...[
+        TextField(
+          controller: _nombreController,
+          readOnly: _invitacionCargada,
+          decoration: InputDecoration(
+            labelText: 'Nombre de la reserva *',
+            hintText: 'Ej: Familia González',
+            filled: true,
+            fillColor: _invitacionCargada ? Colors.grey.shade100 : Colors.white,
+            prefixIcon: Icon(Icons.person, color: const Color(0xFFD946A6)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(color: Color(0xFFD946A6), width: 2),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        TextField(
+          controller: _lugaresController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: _invitacionCargada 
+                ? 'Cantidad de lugares que confirmas *'
+                : 'Cantidad de lugares *',
+            hintText: _invitacionCargada 
+                ? 'Máximo: ${_datosInvitacion!['lugaresAsignados']}'
+                : 'Ej: 2',
+            helperText: _invitacionCargada 
+                ? 'Puedes confirmar de 1 hasta ${_datosInvitacion!['lugaresAsignados']} lugares'
+                : null,
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: Icon(Icons.people, color: const Color(0xFFD946A6)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(color: Color(0xFFD946A6), width: 2),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        TextField(
+          controller: _mensajeController,
+          maxLines: 4,
+          decoration: InputDecoration(
+            labelText: 'Mensaje para los novios (opcional)',
+            hintText: '¡Escribe tus mejores deseos!',
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: Icon(Icons.message, color: const Color(0xFFD946A6)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(color: Color(0xFFD946A6), width: 2),
+            ),
+          ),
+        ),
+        const SizedBox(height: 30),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: _confirmarAsistencia,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD946A6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              elevation: 5,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.check_circle_outline, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(
+                  'CONFIRMAR ASISTENCIA',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ],
+  ),
+),
+);
+}void _mostrarDialogoConfirmacionFoto(XFile image) {
+  final TextEditingController mensajeLocalController = TextEditingController();
+  
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          'Compartir Foto',
+          style: GoogleFonts.playfairDisplay(
+            color: const Color(0xFFD946A6),
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: kIsWeb
+                      ? Image.network(
+                          image.path,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return FutureBuilder<Uint8List>(
+                              future: image.readAsBytes(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Image.memory(
+                                    snapshot.data!,
+                                    fit: BoxFit.cover,
+                                  );
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            );
+                          },
+                        )
+                      : Image.file(
+                          File(image.path),
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: mensajeLocalController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'Mensaje (opcional)',
+                  hintText: '¡Escribe un mensaje para los novios!',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Color(0xFFD946A6)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Color(0xFFD946A6), width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              mensajeLocalController.dispose();
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final mensaje = mensajeLocalController.text.trim();
+              mensajeLocalController.dispose();
+              Navigator.pop(context);
+              await _subirFotoConMensaje(image, mensaje);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD946A6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text(
+              'Compartir',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _subirFotoConMensaje(XFile image, String mensaje) async {
+  try {
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFFD946A6),
+        ),
+      ),
+    );
+    
+    final storage = FirebaseStorage.instanceFor(
+      bucket: 'gs://invitacione-be055.firebasestorage.app'
+    );
+    
+    final String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final Reference storageRef = storage
+        .ref()
+        .child('Evento')
+        .child(fileName);
+    
+    if (kIsWeb) {
+      final bytes = await image.readAsBytes();
+      await storageRef.putData(bytes);
+    } else {
+      await storageRef.putFile(File(image.path));
+    }
+    
+    final String downloadUrl = await storageRef.getDownloadURL();
+    
+    final mensajes = FirebaseFirestore.instance.collection('Mensajes');
+    final snapshot = await mensajes.get();
+    final nextIndex = snapshot.docs.length;
+    
+    await mensajes.doc(nextIndex.toString()).set({
+      'mensaje': mensaje.isEmpty ? '' : mensaje,
+      'fotoUrl': downloadUrl,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+    
+    if (!mounted) return;
+    Navigator.pop(context);
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.white),
+            SizedBox(width: 10),
+            Text('¡Foto compartida exitosamente!'),
+          ],
+        ),
+        backgroundColor: Colors.green.shade700,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  } catch (e) {
+    if (!mounted) return;
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al subir foto: $e')),
+    );
+  }
+}
+
 
 
 Future<void> _cargarInvitacionDesdeUrl() async {
@@ -915,44 +1594,44 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
         
         final mensajeInvitacion = _datosInvitacion!['mensaje'] ?? '';
         
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => FadeIn(
-            duration: const Duration(milliseconds: 500),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-              backgroundColor: Colors.white,
-              title: Column(
-                children: [
-                  BounceInDown(
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [Colors.green.shade400, Colors.green.shade700],
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.white,
-                        size: 50,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '¡Confirmación Exitosa!',
-                    style: GoogleFonts.playfairDisplay(
-                      color: const Color(0xFF7A9B8E),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 26,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+       showDialog(
+  context: context,
+  barrierDismissible: false,
+  builder: (context) => FadeIn(
+    duration: const Duration(milliseconds: 500),
+    child: AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      backgroundColor: Colors.white,
+      title: Column(
+        children: [
+          BounceInDown(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Colors.green.shade400, Colors.green.shade700],
+                ),
               ),
+              child: const Icon(
+                Icons.check_circle_outline,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '¡Confirmación Exitosa!',
+            style: GoogleFonts.playfairDisplay(
+              color: const Color(0xFFD946A6),  // <- CAMBIO AQUÍ
+              fontWeight: FontWeight.w600,
+              fontSize: 26,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
               content: FadeInUp(
                 delay: const Duration(milliseconds: 300),
                 child: Column(
@@ -1060,37 +1739,37 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
                   ],
                 ),
               ),
-              actions: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _mensajeController.clear();
-                      _cargarDatosInvitacion(_invitacionId!);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF7A9B8E),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      elevation: 3,
-                    ),
-                    child: Text(
-                      'Cerrar',
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+               actions: [
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _mensajeController.clear();
+              _cargarDatosInvitacion(_invitacionId!);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFD946A6),  // <- CAMBIO AQUÍ
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              elevation: 3,
+            ),
+            child: Text(
+              'Cerrar',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        );
+        ),
+      ],
+    ),
+  ),
+);
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1155,184 +1834,7 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     }
   }
   
-  void _mostrarDialogoConfirmacionFoto(XFile image) {
-    final TextEditingController mensajeLocalController = TextEditingController();
-    
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(
-            'Compartir Foto',
-            style: GoogleFonts.playfairDisplay(
-              color: const Color(0xFF7A9B8E),
-              fontWeight: FontWeight.w600,
-              fontSize: 24,
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: kIsWeb
-                        ? Image.network(
-                            image.path,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return FutureBuilder<Uint8List>(
-                                future: image.readAsBytes(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Image.memory(
-                                      snapshot.data!,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              );
-                            },
-                          )
-                        : Image.file(
-                            File(image.path),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: mensajeLocalController,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: 'Mensaje (opcional)',
-                    hintText: '¡Escribe un mensaje para los novios!',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF7A9B8E)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF7A9B8E), width: 2),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                mensajeLocalController.dispose();
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancelar',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final mensaje = mensajeLocalController.text.trim();
-                mensajeLocalController.dispose();
-                Navigator.pop(context);
-                await _subirFotoConMensaje(image, mensaje);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF7A9B8E),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text(
-                'Compartir',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
   
-  Future<void> _subirFotoConMensaje(XFile image, String mensaje) async {
-    try {
-      if (!mounted) return;
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(
-            color: Color(0xFF7A9B8E),
-          ),
-        ),
-      );
-      
-      final storage = FirebaseStorage.instanceFor(
-        bucket: 'gs://invitacione-be055.firebasestorage.app'
-      );
-      
-      final String fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final Reference storageRef = storage
-          .ref()
-          .child('Evento')
-          .child(fileName);
-      
-      if (kIsWeb) {
-        final bytes = await image.readAsBytes();
-        await storageRef.putData(bytes);
-      } else {
-        await storageRef.putFile(File(image.path));
-      }
-      
-      final String downloadUrl = await storageRef.getDownloadURL();
-      
-      final mensajes = FirebaseFirestore.instance.collection('Mensajes');
-      final snapshot = await mensajes.get();
-      final nextIndex = snapshot.docs.length;
-      
-      await mensajes.doc(nextIndex.toString()).set({
-        'mensaje': mensaje.isEmpty ? '' : mensaje,
-        'fotoUrl': downloadUrl,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-      
-      if (!mounted) return;
-      Navigator.pop(context);
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 10),
-              Text('¡Foto compartida exitosamente!'),
-            ],
-          ),
-          backgroundColor: Colors.green.shade700,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al subir foto: $e')),
-      );
-    }
-  }
   
   void _mostrarDialogoCodigo() {
     showDialog(
@@ -1438,44 +1940,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
   
   
   
-  Widget _buildTimeUnit(String value, String label) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Text(
-            value.padLeft(2, '0'),
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF7A9B8E),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              fontSize: 11,
-              color: Colors.grey.shade600,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
   
   
   
@@ -1515,464 +1979,12 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
   }
   
   
-  Widget _buildPadreItem(String titulo, List<String> nombres, IconData icono) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF5F3EF),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0xFFE8E4DC)),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icono, color: const Color(0xFF7A9B8E), size: 20),
-              const SizedBox(width: 10),
-              Text(
-                titulo,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF7A9B8E),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          ...nombres.map((nombre) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              nombre,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                color: Colors.grey.shade700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          )),
-        ],
-      ),
-    );
-  }
   
   
-  Widget _buildPadrinoCard(String nombre) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.amber.shade200, width: 2),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.workspace_premium, color: Colors.amber.shade700, size: 28),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              nombre,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade800,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
   
   
-  Widget _buildEventoCard(String hora, String titulo, String lugar, String detalle, 
-                          IconData icono, Color color, String? mapsUrl) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color, width: 2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icono, color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      hora,
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF7A9B8E),
-                      ),
-                    ),
-                    Text(
-                      titulo,
-                      style: GoogleFonts.playfairDisplay(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              Icon(Icons.location_on, size: 18, color: Colors.grey.shade600),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lugar,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                    if (detalle.isNotEmpty)
-                      Text(
-                        detalle,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          if (mapsUrl != null) ...[
-            const SizedBox(height: 15),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _abrirMaps(mapsUrl),
-                icon: const Icon(Icons.map, size: 18),
-                label: const Text('VER EN MAPA'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7A9B8E),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
   
   
-  Widget _buildConfirmacionSection() {
-    final yaConfirmada = _invitacionCargada && 
-                          _datosInvitacion != null && 
-                          _datosInvitacion!['confirmado'] == true;
-    
-    return FadeInUp(
-      child: Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: yaConfirmada 
-              ? [Colors.green.shade50, Colors.green.shade100]
-              : [Colors.white, const Color(0xFFF5F3EF)],
-          ),
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  Icon(
-                    yaConfirmada ? Icons.check_circle : Icons.how_to_reg,
-                    color: yaConfirmada ? Colors.green.shade600 : const Color(0xFF7A9B8E),
-                    size: 60,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    yaConfirmada ? '¡Ya Confirmaste!' : 'Confirma tu Asistencia',
-                    style: GoogleFonts.playfairDisplay(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                      color: yaConfirmada ? Colors.green.shade700 : const Color(0xFF7A9B8E),
-                    ),
-                  ),
-                  if (_invitacionCargada && _datosInvitacion != null) ...[
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: yaConfirmada
-                            ? [Colors.green.shade200, Colors.green.shade300]
-                            : [const Color(0xFF7A9B8E), const Color(0xFF5F8A7C)],
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: (yaConfirmada ? Colors.green : const Color(0xFF7A9B8E)).withOpacity(0.3),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Lugares asignados para ti:',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: Colors.white.withOpacity(0.9),
-                              letterSpacing: 1,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            yaConfirmada 
-                              ? '${_datosInvitacion!['lugaresConfirmados']} de ${_datosInvitacion!['lugaresAsignados']}'
-                              : '${_datosInvitacion!['lugaresAsignados']}',
-                            style: GoogleFonts.playfairDisplay(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
-            
-            if (yaConfirmada) ...[
-              Container(
-                padding: const EdgeInsets.all(25),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.green.shade300, width: 2),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.check_circle, color: Colors.green.shade600, size: 60),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Tu asistencia ya fue confirmada',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Confirmaste ${_datosInvitacion!['lugaresConfirmados']} lugares',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                    if (_datosInvitacion!['mensajeRespuesta'] != null &&
-                        _datosInvitacion!['mensajeRespuesta'].toString().isNotEmpty) ...[
-                      const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade200),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.message, size: 16, color: Colors.grey.shade600),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Tu mensaje:',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              _datosInvitacion!['mensajeRespuesta'],
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ] else ...[
-              TextField(
-                controller: _nombreController,
-                readOnly: _invitacionCargada,
-                decoration: InputDecoration(
-                  labelText: 'Nombre de la reserva *',
-                  hintText: 'Ej: Familia González',
-                  filled: true,
-                  fillColor: _invitacionCargada ? Colors.grey.shade100 : Colors.white,
-                  prefixIcon: Icon(Icons.person, color: const Color(0xFF7A9B8E)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: const BorderSide(color: Color(0xFF7A9B8E), width: 2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _lugaresController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: _invitacionCargada 
-                      ? 'Cantidad de lugares que confirmas *'
-                      : 'Cantidad de lugares *',
-                  hintText: _invitacionCargada 
-                      ? 'Máximo: ${_datosInvitacion!['lugaresAsignados']}'
-                      : 'Ej: 2',
-                  helperText: _invitacionCargada 
-                      ? 'Puedes confirmar de 1 hasta ${_datosInvitacion!['lugaresAsignados']} lugares'
-                      : null,
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.people, color: const Color(0xFF7A9B8E)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: const BorderSide(color: Color(0xFF7A9B8E), width: 2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _mensajeController,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: 'Mensaje para los novios (opcional)',
-                  hintText: '¡Escribe tus mejores deseos!',
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.message, color: const Color(0xFF7A9B8E)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.grey.shade300),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: const BorderSide(color: Color(0xFF7A9B8E), width: 2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _confirmarAsistencia,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF7A9B8E),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    elevation: 5,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.check_circle_outline, color: Colors.white),
-                      const SizedBox(width: 12),
-                      Text(
-                        'CONFIRMAR ASISTENCIA',
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
   
   Widget _buildFotosSection() {
     return FadeInUp(
