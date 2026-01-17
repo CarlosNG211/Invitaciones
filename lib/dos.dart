@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:animate_do/animate_do.dart';
 
 class Dos extends StatefulWidget {
@@ -18,7 +18,8 @@ class Dos extends StatefulWidget {
   _DosState createState() => _DosState();
 }
 
-class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEditingController _lugaresController = TextEditingController();
+class _DosState extends State<Dos> with TickerProviderStateMixin {
+    final TextEditingController _lugaresController = TextEditingController();
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _mensajeController = TextEditingController();
   final TextEditingController _codigoController = TextEditingController();
@@ -28,14 +29,13 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEd
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
   bool _debugMode = true;
-    final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isMusicPlaying = false;
-  bool _musicStarted = false;
-  bool _musicLoading = true;
-  String? _audioUrl;
+  final AudioPlayer _audioPlayer = AudioPlayer();  // Mantener igual
+bool _isMusicPlaying = false;
+bool _musicStarted = false;
+bool _musicLoading = true;
+String? _audioUrl;
 
-
-  @override
+@override
 void initState() {
   super.initState();
   _checkUploadDate();
@@ -46,13 +46,14 @@ void initState() {
     vsync: this,
   )..repeat(reverse: true);
   
-  // Configurar reproductor de audio
-  _audioPlayer.setReleaseMode(ReleaseMode.loop);
+  // Configurar reproductor (just_audio)
+  _audioPlayer.setLoopMode(LoopMode.one);
   _audioPlayer.setVolume(0.5);
   
-  // Cargar canción desde Firebase Storage
+  // Cargar canción
   _cargarCancion();
 }
+
 
 Future<void> _cargarCancion() async {
   try {
@@ -67,8 +68,8 @@ Future<void> _cargarCancion() async {
     
     if (_debugMode) print('URL de canción obtenida: $downloadUrl');
     
-    // Configurar la fuente de audio
-    await _audioPlayer.setSourceUrl(downloadUrl);
+    // Cargar audio con just_audio
+    await _audioPlayer.setUrl(downloadUrl);
     
     if (mounted) {
       setState(() {
@@ -89,6 +90,45 @@ Future<void> _cargarCancion() async {
   }
 }
 
+void _toggleMusic() async {
+  if (_musicLoading || _audioUrl == null) return;
+  
+  try {
+    if (!_musicStarted) {
+      setState(() {
+        _musicStarted = true;
+        _isMusicPlaying = true;
+      });
+      await _audioPlayer.play();
+      if (_debugMode) print('Música iniciada');
+    } else {
+      if (_isMusicPlaying) {
+        await _audioPlayer.pause();
+        setState(() {
+          _isMusicPlaying = false;
+        });
+        if (_debugMode) print('Música pausada');
+      } else {
+        await _audioPlayer.play();
+        setState(() {
+          _isMusicPlaying = true;
+        });
+        if (_debugMode) print('Música reanudada');
+      }
+    }
+  } catch (e) {
+    if (_debugMode) print('Error: $e');
+    if (mounted) {
+      setState(() {
+        _isMusicPlaying = false;
+      });
+    }
+  }
+}
+
+
+
+
 @override
 void dispose() {
   _lugaresController.dispose();
@@ -103,39 +143,7 @@ void dispose() {
   super.dispose();
 }
 
-void _toggleMusic() async {
-  if (_musicLoading || _audioUrl == null) return;
-  
-  try {
-    if (!_musicStarted) {
-      setState(() {
-        _musicStarted = true;
-        _isMusicPlaying = true;
-      });
-      await _audioPlayer.resume();
-      if (_debugMode) print('Música iniciada');
-    } else {
-      setState(() {
-        _isMusicPlaying = !_isMusicPlaying;
-      });
-      
-      if (_isMusicPlaying) {
-        await _audioPlayer.resume();
-        if (_debugMode) print('Música reanudada');
-      } else {
-        await _audioPlayer.pause();
-        if (_debugMode) print('Música pausada');
-      }
-    }
-  } catch (e) {
-    if (_debugMode) print('Error al controlar música: $e');
-    if (mounted) {
-      setState(() {
-        _isMusicPlaying = false;
-      });
-    }
-  }
-}Widget _buildHeroSection() {
+Widget _buildHeroSection() {
   return Container(
     height: 550,
     decoration: const BoxDecoration(
