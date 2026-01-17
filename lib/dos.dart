@@ -9,7 +9,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'dart:html' as html;
 
 class Dos extends StatefulWidget {
   const Dos({Key? key}) : super(key: key);
@@ -28,9 +28,241 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEd
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
   bool _debugMode = true;
-    late YoutubePlayerController _musicController;
-  bool _isMusicPlaying = true;
-  bool _musicStarted = false; 
+   html.AudioElement? _audioPlayer;
+  bool _isMusicPlaying = false;
+  bool _musicStarted = false;
+  bool _musicLoading = true;
+@override
+void initState() {
+  super.initState();
+  _checkUploadDate();
+  _cargarInvitacionDesdeUrl();
+  
+  _floatingController = AnimationController(
+    duration: const Duration(seconds: 3),
+    vsync: this,
+  )..repeat(reverse: true);
+  
+  // Cargar canción de Firebase
+  _cargarCancion();
+  // ELIMINAR: _cargarImagenHero();
+}Widget _buildHeroSection() {
+  return Container(
+    height: 550,
+    decoration: const BoxDecoration(
+      color: Color(0xFFE8E4DC),
+      image: DecorationImage(
+        image: AssetImage('assets/1.jpeg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.black.withOpacity(0.4),
+            Colors.transparent,
+            const Color(0xFFF5F3EF),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FadeInDown(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'NOS CASAMOS',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 14,
+                letterSpacing: 4,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 600),
+            child: Text(
+              'Itzel & Oscar',
+              style: GoogleFonts.greatVibes(
+                color: Colors.white,
+                fontSize: 60,
+                fontWeight: FontWeight.w400,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 750),
+            child: Text(
+              'Y BAUTIZO DE',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 12,
+                letterSpacing: 3,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 850),
+            child: Text(
+              'Emily',
+              style: GoogleFonts.greatVibes(
+                color: Colors.white,
+                fontSize: 48,
+                fontWeight: FontWeight.w400,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 900),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '14 • FEBRERO • 2026',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xFFD946A6),
+                  fontSize: 16,
+                  letterSpacing: 3,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 40),
+          CustomPaint(
+            size: const Size(double.infinity, 40),
+            painter: TornPaperPainter(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+@override
+void dispose() {
+  _lugaresController.dispose();
+  _nombreController.dispose();
+  _mensajeController.dispose();
+  _codigoController.dispose();
+  _floatingController.dispose();
+  
+  // Limpiar reproductor de audio
+  if (kIsWeb && _audioPlayer != null) {
+    _audioPlayer!.pause();
+    _audioPlayer!.src = '';
+    _audioPlayer = null;
+  }
+  
+  super.dispose();
+}void _toggleMusic() {
+  if (!kIsWeb || _audioPlayer == null || _musicLoading) return;
+  
+  setState(() {
+    if (!_musicStarted) {
+      _musicStarted = true;
+      _isMusicPlaying = true;
+      _audioPlayer!.play().catchError((error) {
+        if (_debugMode) print('Error al reproducir: $error');
+        _isMusicPlaying = false;
+      });
+    } else {
+      _isMusicPlaying = !_isMusicPlaying;
+      if (_isMusicPlaying) {
+        _audioPlayer!.play().catchError((error) {
+          if (_debugMode) print('Error al reproducir: $error');
+          _isMusicPlaying = false;
+        });
+      } else {
+        _audioPlayer!.pause();
+      }
+    }
+  });
+}
+Future<void> _cargarCancion() async {
+  if (!kIsWeb) return;
+  
+  try {
+    // Obtener URL de descarga de Firebase Storage
+    final storage = FirebaseStorage.instanceFor(
+      bucket: 'gs://invitacione-be055.firebasestorage.app'
+    );
+    
+    final String downloadUrl = await storage
+        .ref()
+        .child('cancion.mp3')
+        .getDownloadURL();
+    
+    if (_debugMode) print('URL de canción obtenida: $downloadUrl');
+    
+    // Crear reproductor de audio con la URL
+    _audioPlayer = html.AudioElement()
+      ..src = downloadUrl
+      ..loop = true
+      ..volume = 0.5
+      ..preload = 'auto';
+    
+    // Escuchar cuando el audio esté listo
+    _audioPlayer!.onCanPlay.listen((_) {
+      if (mounted) {
+        setState(() {
+          _musicLoading = false;
+        });
+      }
+      if (_debugMode) print('Canción lista para reproducir');
+    });
+    
+    // Manejar errores de carga
+    _audioPlayer!.onError.listen((error) {
+      if (_debugMode) print('Error al cargar canción: $error');
+      if (mounted) {
+        setState(() {
+          _musicLoading = false;
+        });
+      }
+    });
+    
+  } catch (e) {
+    if (_debugMode) print('Error al obtener URL de canción: $e');
+    if (mounted) {
+      setState(() {
+        _musicLoading = false;
+      });
+    }
+  }
+}
+  
 
   Future<void> _confirmarAsistencia() async {
   if (_lugaresController.text.isEmpty || _nombreController.text.isEmpty) {
@@ -609,181 +841,7 @@ Widget _buildPadrinoSimple(String nombre) {
     ),
   );
 }
-  Widget _buildHeroSection() {
-  return Container(
-    height: 550,
-    decoration: const BoxDecoration(
-      color: Color(0xFFE8E4DC),
-      image: DecorationImage(
-        image: AssetImage('assets/1.jpeg'),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.black.withOpacity(0.4),
-            Colors.transparent,
-            const Color(0xFFF5F3EF),
-          ],
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FadeInDown(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 300),
-            child: Text(
-              'NOS CASAMOS',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 14,
-                letterSpacing: 4,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1500),
-            delay: const Duration(milliseconds: 600),
-            child: Text(
-              'Itzel & Oscar',
-              style: GoogleFonts.greatVibes(
-                color: Colors.white,
-                fontSize: 60,
-                fontWeight: FontWeight.w400,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          // NUEVO: Línea del bautizo
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 750),
-            child: Text(
-              'Y BAUTIZO DE',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 12,
-                letterSpacing: 3,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1500),
-            delay: const Duration(milliseconds: 850),
-            child: Text(
-              'Emily',
-              style: GoogleFonts.greatVibes(
-                color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.w400,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 900),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                '14 • FEBRERO • 2026',
-                style: GoogleFonts.poppins(
-                  color: const Color(0xFFD946A6),
-                  fontSize: 16,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 40),
-          CustomPaint(
-            size: const Size(double.infinity, 40),
-            painter: TornPaperPainter(),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
-
-@override
-void initState() {
-  super.initState();
-  _checkUploadDate();
-  _cargarInvitacionDesdeUrl();
-  
-  _floatingController = AnimationController(
-    duration: const Duration(seconds: 3),
-    vsync: this,
-  )..repeat(reverse: true);
-  
-  // INICIALIZAR REPRODUCTOR DE MÚSICA
-  _musicController = YoutubePlayerController.fromVideoId(
-    videoId: 'mKs3bybeTO8',
-    autoPlay: false,
-    params: const YoutubePlayerParams(
-      showControls: false,
-      showFullscreenButton: false,
-      mute: false,
-      loop: true,
-      enableCaption: false,
-      strictRelatedVideos: true,
-    ),
-  );
-}@override
-void dispose() {
-  _lugaresController.dispose();
-  _nombreController.dispose();
-  _mensajeController.dispose();
-  _codigoController.dispose();
-  _floatingController.dispose();
-  _musicController.close();
-  super.dispose();
-}void _toggleMusic() {
-  setState(() {
-    if (!_musicStarted) {
-      _musicStarted = true;
-      _isMusicPlaying = true;
-      _musicController.playVideo();
-    } else {
-      _isMusicPlaying = !_isMusicPlaying;
-      if (_isMusicPlaying) {
-        _musicController.playVideo();
-      } else {
-        _musicController.pauseVideo();
-      }
-    }
-  });
-}
 
 Widget _buildCodigoVestimenta() {
   return FadeInUp(
@@ -2219,27 +2277,12 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
       },
     );
   }
-  
   @override
 Widget build(BuildContext context) {
   return Scaffold(
     backgroundColor: const Color(0xFFF5F3EF),
     body: Stack(
       children: [
-        // REPRODUCTOR DE MÚSICA OCULTO
-        Positioned(
-          left: -1000,
-          top: -1000,
-          child: SizedBox(
-            width: 1,
-            height: 1,
-            child: YoutubePlayer(
-              controller: _musicController,
-              aspectRatio: 16 / 9,
-            ),
-          ),
-        ),
-        
         // CONTENIDO PRINCIPAL
         SingleChildScrollView(
           child: Column(
@@ -2258,7 +2301,6 @@ Widget build(BuildContext context) {
               _buildDivider(),
               _buildConfirmacionSection(),
               if (_canUploadPhotos) _buildFotosSection(),
-              // NUEVO: Sección del bautizo después de fotos
               _buildDivider(),
               _buildBautizoSection(),
               const SizedBox(height: 100),
@@ -2266,7 +2308,7 @@ Widget build(BuildContext context) {
           ),
         ),
         
-        // BOTÓN DE CÓDIGO (esquina inferior derecha)
+        // BOTÓN DE CÓDIGO
         Positioned(
           bottom: 20,
           right: 20,
@@ -2287,12 +2329,12 @@ Widget build(BuildContext context) {
           ),
         ),
         
-        // BOTÓN DE MÚSICA (esquina inferior izquierda)
+        // BOTÓN DE MÚSICA (MODIFICADO)
         Positioned(
           bottom: 20,
           left: 20,
           child: GestureDetector(
-            onTap: _toggleMusic,
+            onTap: _musicLoading ? null : _toggleMusic,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(
@@ -2301,15 +2343,18 @@ Widget build(BuildContext context) {
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    const Color(0xFFD946A6),
-                    Colors.pink.shade300,
-                  ],
+                  colors: _musicLoading 
+                    ? [Colors.grey.shade400, Colors.grey.shade500]
+                    : [
+                        const Color(0xFFD946A6),
+                        Colors.pink.shade300,
+                      ],
                 ),
                 borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFD946A6).withOpacity(0.4),
+                    color: (_musicLoading ? Colors.grey : const Color(0xFFD946A6))
+                        .withOpacity(0.4),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
@@ -2318,18 +2363,30 @@ Widget build(BuildContext context) {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    !_musicStarted 
-                        ? Icons.music_note 
-                        : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  if (_musicLoading)
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  else
+                    Icon(
+                      !_musicStarted 
+                          ? Icons.music_note 
+                          : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   const SizedBox(width: 6),
                   Text(
-                    !_musicStarted 
-                        ? 'Reproduce nuestra canción' 
-                        : (_isMusicPlaying ? 'Pausar' : 'Reproducir'),
+                    _musicLoading
+                        ? 'Cargando...'
+                        : (!_musicStarted 
+                            ? 'Reproduce nuestra canción' 
+                            : (_isMusicPlaying ? 'Pausar' : 'Reproducir')),
                     style: GoogleFonts.poppins(
                       color: Colors.white,
                       fontSize: 11,
