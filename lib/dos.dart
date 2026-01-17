@@ -10,6 +10,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:animate_do/animate_do.dart';
+import 'dart:html' as html show AudioElement;
+import 'dart:js' as js;
 
 class Dos extends StatefulWidget {
   const Dos({Key? key}) : super(key: key);
@@ -35,7 +37,9 @@ bool _musicStarted = false;
 bool _musicLoading = true;
 String? _audioUrl;
 
-@override
+ html.AudioElement? _audioElement;
+
+ @override
 void initState() {
   super.initState();
   _checkUploadDate();
@@ -46,16 +50,14 @@ void initState() {
     vsync: this,
   )..repeat(reverse: true);
   
-  // Configurar reproductor (just_audio)
-  _audioPlayer.setLoopMode(LoopMode.one);
-  _audioPlayer.setVolume(0.5);
-  
-  // Cargar canción
-  _cargarCancion();
+  // Cargar canción desde Firebase Storage
+  if (kIsWeb) {
+    _cargarCancion();
+  }
 }
-
-
 Future<void> _cargarCancion() async {
+  if (!kIsWeb) return;
+  
   try {
     final storage = FirebaseStorage.instanceFor(
       bucket: 'gs://invitacione-be055.firebasestorage.app'
@@ -68,17 +70,54 @@ Future<void> _cargarCancion() async {
     
     if (_debugMode) print('URL de canción obtenida: $downloadUrl');
     
-    // Cargar audio con just_audio
-    await _audioPlayer.setUrl(downloadUrl);
+    // Crear elemento de audio
+    _audioElement = html.AudioElement(downloadUrl);
+    _audioElement!.loop = true;
+    _audioElement!.volume = 0.5;
     
-    if (mounted) {
-      setState(() {
-        _audioUrl = downloadUrl;
-        _musicLoading = false;
-      });
-    }
+    // Precargar el audio
+    _audioElement!.load();
     
-    if (_debugMode) print('Canción cargada exitosamente');
+    // Escuchar cuando esté listo
+    _audioElement!.onCanPlay.listen((_) {
+      if (_debugMode) print('Audio listo para reproducir');
+      if (mounted) {
+        setState(() {
+          _audioUrl = downloadUrl;
+          _musicLoading = false;
+        });
+      }
+    });
+    
+    // Escuchar errores
+    _audioElement!.onError.listen((error) {
+      if (_debugMode) print('Error en audio: $error');
+      if (mounted) {
+        setState(() {
+          _musicLoading = false;
+        });
+      }
+    });
+    
+    // Escuchar cuando se reproduce
+    _audioElement!.onPlay.listen((_) {
+      if (_debugMode) print('Audio reproduciéndose');
+      if (mounted) {
+        setState(() {
+          _isMusicPlaying = true;
+        });
+      }
+    });
+    
+    // Escuchar cuando se pausa
+    _audioElement!.onPause.listen((_) {
+      if (_debugMode) print('Audio pausado');
+      if (mounted) {
+        setState(() {
+          _isMusicPlaying = false;
+        });
+      }
+    });
     
   } catch (e) {
     if (_debugMode) print('Error al cargar canción: $e');
@@ -89,35 +128,76 @@ Future<void> _cargarCancion() async {
     }
   }
 }
-
-void _toggleMusic() async {
-  if (_musicLoading || _audioUrl == null) return;
+void _toggleMusic() {
+  if (!kIsWeb || _musicLoading || _audioElement == null) {
+    if (_debugMode) print('No se puede reproducir: loading=$_musicLoading, element=${_audioElement != null}');
+    return;
+  }
   
   try {
     if (!_musicStarted) {
-      setState(() {
-        _musicStarted = true;
-        _isMusicPlaying = true;
+      // Primera vez
+      if (_debugMode) print('Iniciando música...');
+      _musicStarted = true;
+      
+      _audioElement!.play().then((_) {
+        if (_debugMode) print('Play() exitoso');
+        if (mounted) {
+          setState(() {
+            _isMusicPlaying = true;
+          });
+        }
+      }).catchError((error) {
+        if (_debugMode) print('Error en play(): $error');
+        if (mounted) {
+          setState(() {
+            _isMusicPlaying = false;
+            _musicStarted = false;
+          });
+        }
+        
+        // Mostrar error al usuario
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.warning, color: Colors.white),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text('Para reproducir música, toca el botón nuevamente'),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.orange.shade700,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+        );
       });
-      await _audioPlayer.play();
-      if (_debugMode) print('Música iniciada');
+      
     } else {
+      // Toggle play/pause
       if (_isMusicPlaying) {
-        await _audioPlayer.pause();
+        if (_debugMode) print('Pausando...');
+        _audioElement!.pause();
         setState(() {
           _isMusicPlaying = false;
         });
-        if (_debugMode) print('Música pausada');
       } else {
-        await _audioPlayer.play();
-        setState(() {
-          _isMusicPlaying = true;
+        if (_debugMode) print('Reanudando...');
+        _audioElement!.play().catchError((error) {
+          if (_debugMode) print('Error al reanudar: $error');
+          if (mounted) {
+            setState(() {
+              _isMusicPlaying = false;
+            });
+          }
         });
-        if (_debugMode) print('Música reanudada');
       }
     }
+    
   } catch (e) {
-    if (_debugMode) print('Error: $e');
+    if (_debugMode) print('Excepción en _toggleMusic: $e');
     if (mounted) {
       setState(() {
         _isMusicPlaying = false;
@@ -125,10 +205,6 @@ void _toggleMusic() async {
     }
   }
 }
-
-
-
-
 @override
 void dispose() {
   _lugaresController.dispose();
@@ -137,11 +213,16 @@ void dispose() {
   _codigoController.dispose();
   _floatingController.dispose();
   
-  // Limpiar reproductor de audio
-  _audioPlayer.dispose();
+  // Limpiar audio
+  if (kIsWeb && _audioElement != null) {
+    _audioElement!.pause();
+    _audioElement!.src = '';
+    _audioElement = null;
+  }
   
   super.dispose();
 }
+
 
 Widget _buildHeroSection() {
   return Container(
@@ -2335,74 +2416,77 @@ Widget build(BuildContext context) {
         ),
         
         // BOTÓN DE MÚSICA (MODIFICADO)
-        Positioned(
-          bottom: 20,
-          left: 20,
-          child: GestureDetector(
-            onTap: _musicLoading ? null : _toggleMusic,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: EdgeInsets.symmetric(
-                horizontal: _musicStarted ? 12 : 15,
-                vertical: _musicStarted ? 10 : 12,
+Positioned(
+  bottom: 20,
+  left: 20,
+  child: GestureDetector(
+    onTap: () {
+      if (_debugMode) print('Botón presionado - Loading: $_musicLoading, Started: $_musicStarted, Playing: $_isMusicPlaying');
+      _toggleMusic();
+    },
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      padding: EdgeInsets.symmetric(
+        horizontal: _musicStarted ? 12 : 15,
+        vertical: _musicStarted ? 10 : 12,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: _musicLoading 
+            ? [Colors.grey.shade400, Colors.grey.shade500]
+            : [
+                const Color(0xFFD946A6),
+                Colors.pink.shade300,
+              ],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: (_musicLoading ? Colors.grey : const Color(0xFFD946A6))
+                .withOpacity(0.4),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_musicLoading)
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: _musicLoading 
-                    ? [Colors.grey.shade400, Colors.grey.shade500]
-                    : [
-                        const Color(0xFFD946A6),
-                        Colors.pink.shade300,
-                      ],
-                ),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: (_musicLoading ? Colors.grey : const Color(0xFFD946A6))
-                        .withOpacity(0.4),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_musicLoading)
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  else
-                    Icon(
-                      !_musicStarted 
-                          ? Icons.music_note 
-                          : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  const SizedBox(width: 6),
-                  Text(
-                    _musicLoading
-                        ? 'Cargando...'
-                        : (!_musicStarted 
-                            ? 'Reproduce nuestra canción' 
-                            : (_isMusicPlaying ? 'Pausar' : 'Reproducir')),
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+            )
+          else
+            Icon(
+              !_musicStarted 
+                  ? Icons.music_note 
+                  : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
+              color: Colors.white,
+              size: 20,
+            ),
+          const SizedBox(width: 6),
+          Text(
+            _musicLoading
+                ? 'Cargando...'
+                : (!_musicStarted 
+                    ? 'Reproduce nuestra canción' 
+                    : (_isMusicPlaying ? 'Pausar' : 'Reproducir')),
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ),
+        ],
+      ),
+    ),
+  ),
+),
       ],
     ),
   );
