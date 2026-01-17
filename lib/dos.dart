@@ -374,7 +374,7 @@ Widget _buildFooter() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 Text(
-          'Pide tu app o página web',
+          'Pide tu app o página web ',
           style: GoogleFonts.poppins(
             fontSize: 10,
             color: Colors.grey.shade600,
