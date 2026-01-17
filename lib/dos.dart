@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class Dos extends StatefulWidget {
   const Dos({Key? key}) : super(key: key);
@@ -17,8 +18,7 @@ class Dos extends StatefulWidget {
   _DosState createState() => _DosState();
 }
 
-class _DosState extends State<Dos> with TickerProviderStateMixin {
-  final TextEditingController _lugaresController = TextEditingController();
+class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEditingController _lugaresController = TextEditingController();
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _mensajeController = TextEditingController();
   final TextEditingController _codigoController = TextEditingController();
@@ -27,9 +27,208 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
   Map<String, dynamic>? _datosInvitacion;
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
-  bool _debugMode = true; 
+  bool _debugMode = true;
+    late YoutubePlayerController _musicController;
+  bool _isMusicPlaying = true;
+  bool _showMusicPrompt = true;
+  bool _musicStarted = false; 
+@override
+void initState() {
+  super.initState();
+  _checkUploadDate();
+  _cargarInvitacionDesdeUrl();
+  
+  _floatingController = AnimationController(
+    duration: const Duration(seconds: 3),
+    vsync: this,
+  )..repeat(reverse: true);
+  
+  // INICIALIZAR REPRODUCTOR DE MÚSICA
+  _musicController = YoutubePlayerController.fromVideoId(
+    videoId: 'mKs3bybeTO8',
+    autoPlay: false,
+    params: const YoutubePlayerParams(
+      showControls: false,
+      showFullscreenButton: false,
+      mute: false,
+      loop: true,
+      enableCaption: false,
+      strictRelatedVideos: true,
+    ),
+  );
+}@override
+void dispose() {
+  _lugaresController.dispose();
+  _nombreController.dispose();
+  _mensajeController.dispose();
+  _codigoController.dispose();
+  _floatingController.dispose();
+  _musicController.close();
+  super.dispose();
+}void _toggleMusic() {
+  setState(() {
+    if (!_musicStarted) {
+      _musicStarted = true;
+      _isMusicPlaying = true;
+      _musicController.playVideo();
+    } else {
+      _isMusicPlaying = !_isMusicPlaying;
+      if (_isMusicPlaying) {
+        _musicController.playVideo();
+      } else {
+        _musicController.pauseVideo();
+      }
+    }
+  });
+}
+void _iniciarMusica() {
+  setState(() {
+    _showMusicPrompt = false;
+    _isMusicPlaying = true;
+  });
+  _musicController.playVideo();
+}
 
-  Widget _buildCodigoVestimenta() {
+Widget _buildMusicWelcomeOverlay() {
+  return Container(
+    color: Colors.black.withOpacity(0.85),
+    child: Center(
+      child: FadeIn(
+        duration: const Duration(milliseconds: 800),
+        child: Container(
+          margin: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(40),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                const Color(0xFFD946A6),
+                Colors.pink.shade300,
+                Colors.purple.shade300,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFD946A6).withOpacity(0.5),
+                blurRadius: 30,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icono animado
+              Pulse(
+                infinite: true,
+                duration: const Duration(milliseconds: 1500),
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.music_note,
+                    size: 80,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              
+              // Título
+              FadeInDown(
+                delay: const Duration(milliseconds: 300),
+                child: Text(
+                  '🎵 Nuestra Canción 🎵',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 15),
+              
+              // Descripción
+              FadeInUp(
+                delay: const Duration(milliseconds: 500),
+                child: Text(
+                  'Acompaña este momento especial\ncon nuestra música favorita',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.white.withOpacity(0.95),
+                    height: 1.6,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 40),
+              
+              // Botón de reproducir
+              BounceInUp(
+                delay: const Duration(milliseconds: 700),
+                child: ElevatedButton(
+                  onPressed: _iniciarMusica,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFFD946A6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 20,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    elevation: 10,
+                    shadowColor: Colors.black.withOpacity(0.3),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.play_arrow, size: 35),
+                      const SizedBox(width: 15),
+                      Text(
+                        'REPRODUCIR',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              
+              // Botón de continuar sin música
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _showMusicPrompt = false;
+                  });
+                },
+                child: Text(
+                  'Continuar sin música',
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    color: Colors.white.withOpacity(0.7),
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}  Widget _buildCodigoVestimenta() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
     delay: const Duration(milliseconds: 200),
@@ -512,13 +711,18 @@ Widget _buildPadrinosSection() {
           SlideInLeft(
             duration: const Duration(milliseconds: 1000),
             delay: const Duration(milliseconds: 500),
-            child: _buildPadrinoCard('Víctor Uriel Del Villar Ramírez'),
+            child: _buildPadrinoCard('Ma. Elena Ramírez Medina'),
           ),
           const SizedBox(height: 15),
           SlideInRight(
             duration: const Duration(milliseconds: 1000),
             delay: const Duration(milliseconds: 700),
-            child: _buildPadrinoCard('René Ali López Nieva'),
+            child: _buildPadrinoCard('Abigail Paloma Vera'),
+          ), const SizedBox(height: 25),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: _buildPadrinoCard('Augusto Baldera Ramírez'),
           ),
         ],
       ),
@@ -1384,18 +1588,6 @@ Future<void> _cargarInvitacionDesdeUrl() async {
 }
 
 
-@override
-void initState() {
-  super.initState();
-  _checkUploadDate();
-  _cargarInvitacionDesdeUrl();
-  
-  _floatingController = AnimationController(
-    duration: const Duration(seconds: 3),
-    vsync: this,
-  )..repeat(reverse: true);
-}
-
 Future<void> _cargarDatosInvitacion(String invitacionId) async {
   try {
     if (_debugMode) print('Intentando cargar invitación: $invitacionId');
@@ -1467,16 +1659,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
 }
 
 
-  
-  @override
-  void dispose() {
-    _lugaresController.dispose();
-    _nombreController.dispose();
-    _mensajeController.dispose();
-    _codigoController.dispose();
-    _floatingController.dispose();
-    super.dispose();
-  }
   
   void _checkUploadDate() {
     DateTime now = DateTime.now();
@@ -1748,7 +1930,7 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
               _mensajeController.clear();
               _cargarDatosInvitacion(_invitacionId!);
             },
-            style: ElevatedButton.styleFrom(
+            style: ElevatedButton .styleFrom(
               backgroundColor: const Color(0xFFD946A6),  // <- CAMBIO AQUÍ
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
@@ -1886,60 +2068,127 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
   }
   
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F3EF),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildHeroSection(),
-                _buildCountdown(),
-                _buildNoviosSection(),
-                Container(
-                  height: 50,
-                ),
-                _buildPadresSection(),
-                _buildDivider(),
-                _buildPadrinosSection(),
-                _buildDivider(),
-                _buildItinerarioSection(),
-                _buildDivider(),
-                _buildCodigoVestimenta(),
-                _buildDivider(),
-                _buildConfirmacionSection(),
-                if (_canUploadPhotos) _buildFotosSection(),
-                const SizedBox(height: 100),
-              ],
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFFF5F3EF),
+    body: Stack(
+      children: [
+        // REPRODUCTOR DE MÚSICA OCULTO
+        Positioned(
+          left: -1000,
+          top: -1000,
+          child: SizedBox(
+            width: 1,
+            height: 1,
+            child: YoutubePlayer(
+              controller: _musicController,
+              aspectRatio: 16 / 9,
             ),
           ),
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: GestureDetector(
-              onTap: _mostrarDialogoCodigo,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Icon(
-                  Icons.lock_outline,
-                  size: 16,
-                  color: Colors.grey,
-                ),
+        ),
+        
+        // CONTENIDO PRINCIPAL
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeroSection(),
+              _buildCountdown(),
+              _buildNoviosSection(),
+              Container(height: 50),
+              _buildPadresSection(),
+              _buildDivider(),
+              _buildPadrinosSection(),
+              _buildDivider(),
+              _buildItinerarioSection(),
+              _buildDivider(),
+              _buildCodigoVestimenta(),
+              _buildDivider(),
+              _buildConfirmacionSection(),
+              if (_canUploadPhotos) _buildFotosSection(),
+              const SizedBox(height: 100),
+            ],
+          ),
+        ),
+        
+        // BOTÓN DE CÓDIGO (esquina inferior derecha)
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: GestureDetector(
+            onTap: _mostrarDialogoCodigo,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+                Icons.lock_outline,
+                size: 16,
+                color: Colors.grey,
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-  
-  
-  
+        ),
+        
+        // BOTÓN DE MÚSICA (esquina inferior izquierda)
+        Positioned(
+          bottom: 20,
+          left: 20,
+          child: GestureDetector(
+            onTap: _toggleMusic,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: EdgeInsets.symmetric(
+                horizontal: _musicStarted ? 12 : 15,
+                vertical: _musicStarted ? 10 : 12,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFFD946A6),
+                    Colors.pink.shade300,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFD946A6).withOpacity(0.4),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    !_musicStarted 
+                        ? Icons.music_note 
+                        : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    !_musicStarted 
+                        ? 'Reproduce nuestra canción' 
+                        : (_isMusicPlaying ? 'Pausar' : 'Reproducir'),
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
   
   
   
