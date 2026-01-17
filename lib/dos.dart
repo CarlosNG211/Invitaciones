@@ -32,6 +32,342 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEd
   bool _isMusicPlaying = true;
   bool _musicStarted = false; 
 
+  Future<void> _confirmarAsistencia() async {
+  if (_lugaresController.text.isEmpty || _nombreController.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.white),
+            SizedBox(width: 10),
+            Expanded(child: Text('Por favor completa los campos obligatorios')),
+          ],
+        ),
+        backgroundColor: Colors.orange.shade700,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+    return;
+  }
+  
+  final lugaresConfirmados = int.tryParse(_lugaresController.text) ?? 0;
+  
+  if (_invitacionCargada && _invitacionId != null && _datosInvitacion != null) {
+    final lugaresAsignados = _datosInvitacion!['lugaresAsignados'] as int;
+    
+    if (lugaresConfirmados > lugaresAsignados) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.error_outline, color: Colors.white),
+              const SizedBox(width: 10),
+              Expanded(child: Text('Solo puedes confirmar hasta $lugaresAsignados lugares')),
+            ],
+          ),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+    
+    if (lugaresConfirmados <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Debes confirmar al menos 1 lugar'),
+            ],
+          ),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+    
+    if (_datosInvitacion!['confirmado'] == true) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.info_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Expanded(child: Text('Esta invitación ya fue confirmada anteriormente')),
+            ],
+          ),
+          backgroundColor: Colors.orange.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+    
+    try {
+      await FirebaseFirestore.instance
+          .collection('invitaciones')
+          .doc(_invitacionId)
+          .update({
+        'confirmado': true,
+        'lugaresConfirmados': lugaresConfirmados,
+        'mensajeRespuesta': _mensajeController.text.trim(),
+        'fechaConfirmacion': FieldValue.serverTimestamp(),
+      });
+      
+      if (!mounted) return;
+      
+      final mensajeInvitacion = _datosInvitacion!['mensaje'] ?? '';
+      
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => FadeIn(
+          duration: const Duration(milliseconds: 500),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            backgroundColor: Colors.white,
+            title: Column(
+              children: [
+                BounceInDown(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade400, Colors.green.shade700],
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  '¡Confirmación Exitosa!',
+                  style: GoogleFonts.playfairDisplay(
+                    color: const Color(0xFFD946A6),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            content: FadeInUp(
+              delay: const Duration(milliseconds: 300),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '¡Gracias por confirmar tu asistencia!',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: Colors.grey.shade700,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade50, Colors.green.shade100],
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.green.shade300, width: 2),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(Icons.people, color: Colors.green.shade700, size: 35),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Lugares confirmados',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '$lugaresConfirmados de $lugaresAsignados',
+                          style: GoogleFonts.playfairDisplay(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                            color: Colors.green.shade700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (mensajeInvitacion.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F3EF),
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: const Color(0xFFE8E4DC)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.favorite, color: Colors.pink.shade300, size: 18),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Mensaje de los novios:',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: const Color(0xFF7A9B8E),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            mensajeInvitacion,
+                            style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              color: Colors.grey.shade700,
+                              fontStyle: FontStyle.italic,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.celebration, color: Colors.amber.shade700, size: 22),
+                      const SizedBox(width: 8),
+                      Text(
+                        '¡Te esperamos!',
+                        style: GoogleFonts.playfairDisplay(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF7A9B8E),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.celebration, color: Colors.amber.shade700, size: 22),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _mensajeController.clear();
+                    _cargarDatosInvitacion(_invitacionId!);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD946A6),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 3,
+                  ),
+                  child: Text(
+                    'Cerrar',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al confirmar: $e')),
+      );
+    }
+  } else {
+    // Usuario sin invitación personalizada - NO PUEDE CONFIRMAR MÁS DE LO QUE INGRESÓ
+    if (lugaresConfirmados <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Debes confirmar al menos 1 lugar'),
+            ],
+          ),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+    
+    try {
+      final confirmados = FirebaseFirestore.instance.collection('confirmados');
+      final snapshot = await confirmados.get();
+      final nextIndex = snapshot.docs.length;
+      
+      await confirmados.doc(nextIndex.toString()).set({
+        'cantidadLugares': lugaresConfirmados,
+        'nombreReserva': _nombreController.text.trim(),
+        'mensajeNovios': _mensajeController.text.trim(),
+        'fechaConfirmacion': FieldValue.serverTimestamp(),
+      });
+      
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 10),
+              Text('¡Confirmación enviada exitosamente!'),
+            ],
+          ),
+          backgroundColor: Colors.green.shade700,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      
+      _lugaresController.clear();
+      _nombreController.clear();
+      _mensajeController.clear();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al confirmar: $e')),
+      );
+    }
+  }
+}
+
+
 Widget _buildBautizoSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -575,13 +911,13 @@ Widget _buildCodigoVestimenta() {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '25 de Enero, 2026',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange.shade900,
-                          ),
-                        ),
+  '1 de Febrero, 2026',
+  style: GoogleFonts.playfairDisplay(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: Colors.orange.shade900,
+  ),
+),
                       ],
                     ),
                   ),
@@ -1815,321 +2151,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     }
   }
   
-  Future<void> _confirmarAsistencia() async {
-    if (_lugaresController.text.isEmpty || _nombreController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Row(
-            children: [
-              Icon(Icons.warning_amber_rounded, color: Colors.white),
-              SizedBox(width: 10),
-              Expanded(child: Text('Por favor completa los campos obligatorios')),
-            ],
-          ),
-          backgroundColor: Colors.orange.shade700,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
-      return;
-    }
-    
-    final lugaresConfirmados = int.tryParse(_lugaresController.text) ?? 0;
-    
-    if (_invitacionCargada && _invitacionId != null && _datosInvitacion != null) {
-      final lugaresAsignados = _datosInvitacion!['lugaresAsignados'] as int;
-      
-      if (lugaresConfirmados > lugaresAsignados) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.error_outline, color: Colors.white),
-                const SizedBox(width: 10),
-                Expanded(child: Text('Solo puedes confirmar hasta $lugaresAsignados lugares')),
-              ],
-            ),
-            backgroundColor: Colors.red.shade700,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-        return;
-      }
-      
-      if (lugaresConfirmados <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.error_outline, color: Colors.white),
-                SizedBox(width: 10),
-                Text('Debes confirmar al menos 1 lugar'),
-              ],
-            ),
-            backgroundColor: Colors.red.shade700,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-        return;
-      }
-      
-      if (_datosInvitacion!['confirmado'] == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.white),
-                SizedBox(width: 10),
-                Expanded(child: Text('Esta invitación ya fue confirmada anteriormente')),
-              ],
-            ),
-            backgroundColor: Colors.orange.shade700,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-        return;
-      }
-      
-      try {
-        await FirebaseFirestore.instance
-            .collection('invitaciones')
-            .doc(_invitacionId)
-            .update({
-          'confirmado': true,
-          'lugaresConfirmados': lugaresConfirmados,
-          'mensajeRespuesta': _mensajeController.text.trim(),
-          'fechaConfirmacion': FieldValue.serverTimestamp(),
-        });
-        
-        if (!mounted) return;
-        
-        final mensajeInvitacion = _datosInvitacion!['mensaje'] ?? '';
-        
-       showDialog(
-  context: context,
-  barrierDismissible: false,
-  builder: (context) => FadeIn(
-    duration: const Duration(milliseconds: 500),
-    child: AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-      backgroundColor: Colors.white,
-      title: Column(
-        children: [
-          BounceInDown(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [Colors.green.shade400, Colors.green.shade700],
-                ),
-              ),
-              child: const Icon(
-                Icons.check_circle_outline,
-                color: Colors.white,
-                size: 50,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            '¡Confirmación Exitosa!',
-            style: GoogleFonts.playfairDisplay(
-              color: const Color(0xFFD946A6),  // <- CAMBIO AQUÍ
-              fontWeight: FontWeight.w600,
-              fontSize: 26,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-              content: FadeInUp(
-                delay: const Duration(milliseconds: 300),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '¡Gracias por confirmar tu asistencia!',
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.grey.shade700,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.green.shade50, Colors.green.shade100],
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.green.shade300, width: 2),
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(Icons.people, color: Colors.green.shade700, size: 35),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Lugares confirmados',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            '$lugaresConfirmados de $lugaresAsignados',
-                            style: GoogleFonts.playfairDisplay(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32,
-                              color: Colors.green.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (mensajeInvitacion.isNotEmpty) ...[
-                      const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF5F3EF),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: const Color(0xFFE8E4DC)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.favorite, color: Colors.pink.shade300, size: 18),
-                                const SizedBox(width: 8),
-                                Text(
-                                  'Mensaje de los novios:',
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12,
-                                    color: const Color(0xFF7A9B8E),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              mensajeInvitacion,
-                              style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                color: Colors.grey.shade700,
-                                fontStyle: FontStyle.italic,
-                                height: 1.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.celebration, color: Colors.amber.shade700, size: 22),
-                        const SizedBox(width: 8),
-                        Text(
-                          '¡Te esperamos!',
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF7A9B8E),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Icon(Icons.celebration, color: Colors.amber.shade700, size: 22),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-               actions: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _mensajeController.clear();
-              _cargarDatosInvitacion(_invitacionId!);
-            },
-            style: ElevatedButton .styleFrom(
-              backgroundColor: const Color(0xFFD946A6),  // <- CAMBIO AQUÍ
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              elevation: 3,
-            ),
-            child: Text(
-              'Cerrar',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-);
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al confirmar: $e')),
-        );
-      }
-    } else {
-      try {
-        final confirmados = FirebaseFirestore.instance.collection('confirmados');
-        final snapshot = await confirmados.get();
-        final nextIndex = snapshot.docs.length;
-        
-        await confirmados.doc(nextIndex.toString()).set({
-          'cantidadLugares': lugaresConfirmados,
-          'nombreReserva': _nombreController.text.trim(),
-          'mensajeNovios': _mensajeController.text.trim(),
-          'fechaConfirmacion': FieldValue.serverTimestamp(),
-        });
-        
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 10),
-                Text('¡Confirmación enviada exitosamente!'),
-              ],
-            ),
-            backgroundColor: Colors.green.shade700,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-        
-        _lugaresController.clear();
-        _nombreController.clear();
-        _mensajeController.clear();
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al confirmar: $e')),
-        );
-      }
-    }
-  }
   
   Future<void> _seleccionarYMostrarFoto() async {
     try {
