@@ -66,6 +66,7 @@ dependencies:
   animate_do: ^4.2.0
   just_audio: ^0.10.5
   rename: ^3.1.0
+  rename_app: ^1.6.5
 
 dependency_overrides:
   image_picker_android: ^0.8.8+2
