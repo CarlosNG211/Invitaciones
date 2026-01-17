@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
-import 'dart:html' as html;
 
 class Dos extends StatefulWidget {
   const Dos({Key? key}) : super(key: key);
@@ -28,11 +28,14 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {  final TextEd
   bool _invitacionCargada = false;
   late AnimationController _floatingController;
   bool _debugMode = true;
-   html.AudioElement? _audioPlayer;
+    final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isMusicPlaying = false;
   bool _musicStarted = false;
   bool _musicLoading = true;
-@override
+  String? _audioUrl;
+
+
+  @override
 void initState() {
   super.initState();
   _checkUploadDate();
@@ -43,9 +46,95 @@ void initState() {
     vsync: this,
   )..repeat(reverse: true);
   
-  // Cargar canción de Firebase
+  // Configurar reproductor de audio
+  _audioPlayer.setReleaseMode(ReleaseMode.loop);
+  _audioPlayer.setVolume(0.5);
+  
+  // Cargar canción desde Firebase Storage
   _cargarCancion();
-  // ELIMINAR: _cargarImagenHero();
+}
+
+Future<void> _cargarCancion() async {
+  try {
+    final storage = FirebaseStorage.instanceFor(
+      bucket: 'gs://invitacione-be055.firebasestorage.app'
+    );
+    
+    final String downloadUrl = await storage
+        .ref()
+        .child('cancion.mp3')
+        .getDownloadURL();
+    
+    if (_debugMode) print('URL de canción obtenida: $downloadUrl');
+    
+    // Configurar la fuente de audio
+    await _audioPlayer.setSourceUrl(downloadUrl);
+    
+    if (mounted) {
+      setState(() {
+        _audioUrl = downloadUrl;
+        _musicLoading = false;
+      });
+    }
+    
+    if (_debugMode) print('Canción cargada exitosamente');
+    
+  } catch (e) {
+    if (_debugMode) print('Error al cargar canción: $e');
+    if (mounted) {
+      setState(() {
+        _musicLoading = false;
+      });
+    }
+  }
+}
+
+@override
+void dispose() {
+  _lugaresController.dispose();
+  _nombreController.dispose();
+  _mensajeController.dispose();
+  _codigoController.dispose();
+  _floatingController.dispose();
+  
+  // Limpiar reproductor de audio
+  _audioPlayer.dispose();
+  
+  super.dispose();
+}
+
+void _toggleMusic() async {
+  if (_musicLoading || _audioUrl == null) return;
+  
+  try {
+    if (!_musicStarted) {
+      setState(() {
+        _musicStarted = true;
+        _isMusicPlaying = true;
+      });
+      await _audioPlayer.resume();
+      if (_debugMode) print('Música iniciada');
+    } else {
+      setState(() {
+        _isMusicPlaying = !_isMusicPlaying;
+      });
+      
+      if (_isMusicPlaying) {
+        await _audioPlayer.resume();
+        if (_debugMode) print('Música reanudada');
+      } else {
+        await _audioPlayer.pause();
+        if (_debugMode) print('Música pausada');
+      }
+    }
+  } catch (e) {
+    if (_debugMode) print('Error al controlar música: $e');
+    if (mounted) {
+      setState(() {
+        _isMusicPlaying = false;
+      });
+    }
+  }
 }Widget _buildHeroSection() {
   return Container(
     height: 550,
@@ -170,98 +259,6 @@ void initState() {
   );
 }
 
-@override
-void dispose() {
-  _lugaresController.dispose();
-  _nombreController.dispose();
-  _mensajeController.dispose();
-  _codigoController.dispose();
-  _floatingController.dispose();
-  
-  // Limpiar reproductor de audio
-  if (kIsWeb && _audioPlayer != null) {
-    _audioPlayer!.pause();
-    _audioPlayer!.src = '';
-    _audioPlayer = null;
-  }
-  
-  super.dispose();
-}void _toggleMusic() {
-  if (!kIsWeb || _audioPlayer == null || _musicLoading) return;
-  
-  setState(() {
-    if (!_musicStarted) {
-      _musicStarted = true;
-      _isMusicPlaying = true;
-      _audioPlayer!.play().catchError((error) {
-        if (_debugMode) print('Error al reproducir: $error');
-        _isMusicPlaying = false;
-      });
-    } else {
-      _isMusicPlaying = !_isMusicPlaying;
-      if (_isMusicPlaying) {
-        _audioPlayer!.play().catchError((error) {
-          if (_debugMode) print('Error al reproducir: $error');
-          _isMusicPlaying = false;
-        });
-      } else {
-        _audioPlayer!.pause();
-      }
-    }
-  });
-}
-Future<void> _cargarCancion() async {
-  if (!kIsWeb) return;
-  
-  try {
-    // Obtener URL de descarga de Firebase Storage
-    final storage = FirebaseStorage.instanceFor(
-      bucket: 'gs://invitacione-be055.firebasestorage.app'
-    );
-    
-    final String downloadUrl = await storage
-        .ref()
-        .child('cancion.mp3')
-        .getDownloadURL();
-    
-    if (_debugMode) print('URL de canción obtenida: $downloadUrl');
-    
-    // Crear reproductor de audio con la URL
-    _audioPlayer = html.AudioElement()
-      ..src = downloadUrl
-      ..loop = true
-      ..volume = 0.5
-      ..preload = 'auto';
-    
-    // Escuchar cuando el audio esté listo
-    _audioPlayer!.onCanPlay.listen((_) {
-      if (mounted) {
-        setState(() {
-          _musicLoading = false;
-        });
-      }
-      if (_debugMode) print('Canción lista para reproducir');
-    });
-    
-    // Manejar errores de carga
-    _audioPlayer!.onError.listen((error) {
-      if (_debugMode) print('Error al cargar canción: $error');
-      if (mounted) {
-        setState(() {
-          _musicLoading = false;
-        });
-      }
-    });
-    
-  } catch (e) {
-    if (_debugMode) print('Error al obtener URL de canción: $e');
-    if (mounted) {
-      setState(() {
-        _musicLoading = false;
-      });
-    }
-  }
-}
   
 
   Future<void> _confirmarAsistencia() async {
