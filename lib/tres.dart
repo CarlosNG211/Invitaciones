@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 
 class Tres extends StatefulWidget {
@@ -18,9 +19,76 @@ class _TresState extends State<Tres> with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> _invitaciones = [];
   late AnimationController _animationController;
   String _filtroEstado = 'Todos'; 
+
+  @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFFF5F7FA),
+    appBar: AppBar(
+      backgroundColor: const Color(0xFF7A9B8E),
+      elevation: 0,
+      title: const Text(
+        'Panel de Administración',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+        ),
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.refresh, color: Colors.white),
+          onPressed: _cargarInvitaciones,
+          tooltip: 'Actualizar',
+        ),
+        const SizedBox(width: 8),
+      ],
+    ),
+    // BOTÓN FLOTANTE AGREGADO AQUÍ
+    floatingActionButton: FloatingActionButton.extended(
+      onPressed: () {
+        Navigator.pushNamed(context, 'fotos');
+      },
+      backgroundColor: const Color(0xFFD946A6),
+      icon: const Icon(Icons.photo_library, color: Colors.white),
+      label: Text(
+        'Ver Galería',
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+      elevation: 6,
+    ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    body: _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(
+              color: Color(0xFF7A9B8E),
+              strokeWidth: 3,
+            ),
+          )
+        : RefreshIndicator(
+            onRefresh: _cargarInvitaciones,
+            color: const Color(0xFF7A9B8E),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  _buildEstadisticas(),
+                  _buildFormularioCrear(),
+                  _buildFiltros(),
+                  _buildListaInvitaciones(),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            ),
+          ),
+  );
+}
   
   void _mostrarDialogoLink(String invitacionId) {
-  // Cambiado el formato del link para usar el parámetro 'id' en la ruta 'dos'
    final link = 'https://invitaciones-indol-sigma.vercel.app/#/dos?id=$invitacionId';
 
   
@@ -581,55 +649,6 @@ void _verDetalles(Map<String, dynamic> invitacion) {
     };
   }
   
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF7A9B8E),
-        elevation: 0,
-        title: const Text(
-          'Panel de Administración',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: _cargarInvitaciones,
-            tooltip: 'Actualizar',
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
-      body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF7A9B8E),
-                strokeWidth: 3,
-              ),
-            )
-          : RefreshIndicator(
-              onRefresh: _cargarInvitaciones,
-              color: const Color(0xFF7A9B8E),
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    _buildEstadisticas(),
-                    _buildFormularioCrear(),
-                    _buildFiltros(),
-                    _buildListaInvitaciones(),
-                    const SizedBox(height: 30),
-                  ],
-                ),
-              ),
-            ),
-    );
-  }
   
   Widget _buildEstadisticas() {
     final stats = _estadisticas;

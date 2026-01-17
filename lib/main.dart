@@ -1,5 +1,6 @@
 import 'package:invitaciones/dos.dart';
 import 'package:invitaciones/tres.dart';
+import 'package:invitaciones/fotos.dart'; // IMPORT AGREGADO
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         final uri = Uri.parse(settings.name ?? '/');
 
+        // RUTA PARA DOS
         if (uri.path == '/dos' || uri.path == 'dos') {
           final queryParams = uri.queryParameters;
 
@@ -53,6 +55,7 @@ class MyApp extends StatelessWidget {
           );
         }
 
+        // RUTA PARA TRES
         if (uri.path == '/tres' || uri.path == 'tres') {
           return MaterialPageRoute(
             builder: (_) => const Tres(),
@@ -60,6 +63,15 @@ class MyApp extends StatelessWidget {
           );
         }
 
+        // RUTA PARA FOTOS - AGREGADA AQUÍ
+        if (uri.path == '/fotos' || uri.path == 'fotos') {
+          return MaterialPageRoute(
+            builder: (_) => const Fotos(),
+            settings: const RouteSettings(name: '/fotos'),
+          );
+        }
+
+        // RUTA POR DEFECTO (HOME)
         if (uri.path == '/' || uri.path.isEmpty) {
           return MaterialPageRoute(
             builder: (_) => const Dos(),
@@ -67,6 +79,7 @@ class MyApp extends StatelessWidget {
           );
         }
 
+        // FALLBACK - CUALQUIER OTRA RUTA
         return MaterialPageRoute(
           builder: (_) => const Dos(),
           settings: const RouteSettings(name: '/'),
