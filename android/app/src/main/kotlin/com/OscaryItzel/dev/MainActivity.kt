@@ -1,4 +1,4 @@
-package com.invitaciones.dev
+package com.OscaryItzel.dev
 
 import io.flutter.embedding.android.FlutterActivity
 

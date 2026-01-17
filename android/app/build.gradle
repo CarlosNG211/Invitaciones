@@ -12,7 +12,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.invitaciones.dev"
+    namespace = "com.OscaryItzel.dev"
     compileSdk = 36
 
     compileOptions {
@@ -34,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.invitaciones.dev"
+        applicationId = "com.OscaryItzel.dev"
         minSdk = 26  // Cambiado de 24 a 26 (requerido para desugar_jdk_libs 2.1.4)
         targetSdk = 36
         versionCode = flutter.versionCode
