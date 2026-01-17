@@ -356,23 +356,6 @@ class _FotosState extends State<Fotos> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F3EF),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFD946A6),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          '📸 Galería del Evento',
-          style: GoogleFonts.playfairDisplay(
-            color: Colors.white,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: RefreshIndicator(
         onRefresh: _cargarFotos,
         color: const Color(0xFFD946A6),
