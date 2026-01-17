@@ -2410,25 +2410,7 @@ Future<void> _cargarInvitacionDesdeUrl() async {
       await _cargarDatosInvitacion(invitacionId);
     } else {
       if (_debugMode) print('No se encontró ID de invitación');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.white),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text('Visualizando invitación general. Para ver una invitación específica, usa el enlace proporcionado.'),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.blue.shade700,
-            duration: const Duration(seconds: 5),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-        );
-      }
+     
     }
   });
 }
