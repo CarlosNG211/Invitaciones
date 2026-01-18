@@ -112,7 +112,7 @@ Widget _buildHeroSection() {
             duration: const Duration(milliseconds: 1500),
             delay: const Duration(milliseconds: 850),
             child: Text(
-              'Emily',
+              'Emily Catalyna',
               style: GoogleFonts.greatVibes(
                 color: Colors.white,
                 fontSize: 48,
@@ -2410,7 +2410,9 @@ Future<void> _cargarInvitacionDesdeUrl() async {
       await _cargarDatosInvitacion(invitacionId);
     } else {
       if (_debugMode) print('No se encontró ID de invitación');
-     
+      if (mounted) {
+        
+      }
     }
   });
 }
