@@ -1502,7 +1502,7 @@ Widget _buildPadresSection() {
             duration: const Duration(milliseconds: 1000),
             delay: const Duration(milliseconds: 700),
             child: _buildPadreItem('Padres del Novio', [
-              'Petra Lozano Salcedo',
+              'Maria Petra Lozano Salcedo',
               'Arturo Eduardo Quintana Briseño',
             ], Icons.people_outline),
           ),
@@ -1568,7 +1568,7 @@ Widget _buildPadrinosSection() {
           SlideInLeft(
             duration: const Duration(milliseconds: 1000),
             delay: const Duration(milliseconds: 500),
-            child: _buildPadrinoCard('Augusto Baldera Ramírez'),
+            child: _buildPadrinoCard('Augusto Balderas Ramírez'),
           ),
         ],
       ),
