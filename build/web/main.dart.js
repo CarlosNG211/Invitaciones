@@ -94122,7 +94122,7 @@ ag(){var s=$.aF()
 return new A.GA(new A.hZ(B.c3,s),new A.hZ(B.c3,s),new A.hZ(B.c3,s),new A.hZ(B.c3,s),null,null)}}
 A.GA.prototype={
 L(b2){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d,c,b,a=this,a0=null,a1='Sal\xf3n "La Caba\xf1a"',a2="lugaresConfirmados",a3="lugaresAsignados",a4="mensajeRespuesta",a5=t.t_,a6=A.b([A.ac(102,B.k.n()>>>16&255,B.k.n()>>>8&255,B.k.n()&255),B.H,B.cZ],a5),a7=A.nQ(!0,A.au("NOS CASAMOS",a0,a0,a0,A.bT().$4$color$fontSize$fontWeight$letterSpacing(B.f,14,B.r,4),a0,a0),a0,B.F,B.aT,B.d_,100,!1,a0),a8=B.d.aC(127.5),a9=t.kO,b0=A.eN(!0,A.au("Itzel & Oscar",a0,a0,a0,A.aH_().$4$color$fontSize$fontWeight$shadows(B.f,60,B.r,A.b([new A.iA(A.ac(a8,B.k.n()>>>16&255,B.k.n()>>>8&255,B.k.n()&255),B.iI,10)],a9)),a0,a0),a0,B.F,B.d1,B.cb,100,!1,a0),b1=A.eN(!0,A.au("Y BAUTIZO DE",a0,a0,a0,A.bT().$4$color$fontSize$fontWeight$letterSpacing(B.f,12,B.r,3),a0,a0),a0,B.F,B.Hu,B.d_,100,!1,a0)
-a8=A.eN(!0,A.au("Emily",a0,a0,a0,A.aH_().$4$color$fontSize$fontWeight$shadows(B.f,48,B.r,A.b([new A.iA(A.ac(a8,B.k.n()>>>16&255,B.k.n()>>>8&255,B.k.n()&255),B.iI,10)],a9)),a0,a0),a0,B.F,B.Hv,B.cb,100,!1,a0)
+a8=A.eN(!0,A.au("Emily Catalyna",a0,a0,a0,A.aH_().$4$color$fontSize$fontWeight$shadows(B.f,48,B.r,A.b([new A.iA(A.ac(a8,B.k.n()>>>16&255,B.k.n()>>>8&255,B.k.n()&255),B.iI,10)],a9)),a0,a0),a0,B.F,B.Hv,B.cb,100,!1,a0)
 s=A.ac(242,B.f.n()>>>16&255,B.f.n()>>>8&255,B.f.n()&255)
 r=A.ai(20)
 q=t.p
