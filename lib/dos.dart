@@ -32,9 +32,289 @@ class _DosState extends State<Dos> with TickerProviderStateMixin {
 bool _isMusicPlaying = false;
 bool _musicStarted = false;
 bool _musicLoading = true;
-
  html.AudioElement? _audioElement;
+ 
+ // REEMPLAZA LA FUNCIÓN _buildBautizoSection() COMPLETA CON ESTA:
 
+Widget _buildBautizoSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.blue.shade50, Colors.purple.shade50],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // IMAGEN RECTANGULAR FORMAL
+          Bounce(
+            duration: const Duration(milliseconds: 1500),
+            child: Container(
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/2.jpeg',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade100,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.child_care,
+                          color: Colors.blue.shade400,
+                          size: 80,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Nombre de la bebé
+          Container(
+            padding: const EdgeInsets.all(25),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.blue.shade200, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Icon(Icons.favorite, color: Colors.pink.shade300, size: 30),
+                const SizedBox(height: 15),
+                Text(
+                  'Emily Catalyna',
+                  style: GoogleFonts.greatVibes(
+                    fontSize: 38,
+                    color: const Color(0xFFD946A6),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Quintana Del Villar',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          
+          // Padrinos
+          SlideInUp(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.purple.shade50, Colors.pink.shade50],
+                ),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.purple.shade200, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.stars, color: const Color(0xFFD946A6), size: 22),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Padrinos',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFFD946A6),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  _buildPadrinoSimple('Víctor Uriel Del Villar Ramírez'),
+                  const SizedBox(height: 12),
+                  _buildPadrinoSimple('René Ali López Nieva'),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 30),
+          
+          // Información del evento
+          SlideInUp(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.blue.shade200, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.blue.shade300, Colors.blue.shade500],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.access_time,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '2:00 PM',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFFD946A6),
+                              ),
+                            ),
+                            Text(
+                              'Salón "La Cabaña"',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _abrirMaps('https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7'),
+                      icon: const Icon(Icons.map, size: 18),
+                      label: const Text('VER EN MAPA'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade400,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        elevation: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+// MANTÉN ESTA FUNCIÓN IGUAL (no cambies nada)
+Widget _buildPadrinoSimple(String nombre) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.purple.shade200),
+    ),
+    child: Row(
+      children: [
+        Icon(Icons.workspace_premium, color: Colors.purple.shade400, size: 20),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            nombre,
+            style: GoogleFonts.poppins(
+              fontSize: 13,
+              color: Colors.grey.shade800,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 Widget _buildHeroSection() {
   return Container(
     height: 550,
@@ -920,247 +1200,7 @@ void dispose() {
 }
 
 
-Widget _buildBautizoSection() {
-  return FadeInUp(
-    duration: const Duration(milliseconds: 1000),
-    delay: const Duration(milliseconds: 200),
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blue.shade50, Colors.purple.shade50],
-        ),
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // Icono
-          Bounce(
-            duration: const Duration(milliseconds: 1500),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.child_care,
-                color: Colors.blue.shade400,
-                size: 50,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          
-          // Título
-          FadeInDown(
-            duration: const Duration(milliseconds: 800),
-            delay: const Duration(milliseconds: 300),
-            child: Text(
-              'Bautizo',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFFD946A6),
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          
-          // Nombre de la bebé
-          Container(
-            padding: const EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.blue.shade200, width: 2),
-            ),
-            child: Column(
-              children: [
-                Icon(Icons.favorite, color: Colors.pink.shade300, size: 30),
-                const SizedBox(height: 15),
-                Text(
-                  'Emily Catalyna',
-                  style: GoogleFonts.greatVibes(
-                    fontSize: 38,
-                    color: const Color(0xFFD946A6),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Quintana Del Villar',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey.shade700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 30),
-          
-          // Padrinos
-          SlideInUp(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 500),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.purple.shade50,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.purple.shade200),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.stars, color: const Color(0xFFD946A6), size: 22),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Padrinos',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFFD946A6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _buildPadrinoSimple('Víctor Uriel Del Villar Ramírez'),
-                  const SizedBox(height: 12),
-                  _buildPadrinoSimple('René Ali López Nieva'),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          
-          // Información del evento
-          SlideInUp(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 700),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.blue.shade200, width: 2),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          Icons.access_time,
-                          color: Colors.blue.shade700,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '2:00 PM',
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFFD946A6),
-                              ),
-                            ),
-                            Text(
-                              'Salón "La Cabaña"',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _abrirMaps('https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7'),
-                      icon: const Icon(Icons.map, size: 18),
-                      label: const Text('VER EN MAPA'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade400,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
-Widget _buildPadrinoSimple(String nombre) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.purple.shade200),
-    ),
-    child: Row(
-      children: [
-        Icon(Icons.workspace_premium, color: Colors.purple.shade400, size: 20),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            nombre,
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              color: Colors.grey.shade800,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
 
 
 Widget _buildCodigoVestimenta() {
