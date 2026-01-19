@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,9 +35,331 @@ bool _isMusicPlaying = false;
 bool _musicStarted = false;
 bool _musicLoading = true;
  html.AudioElement? _audioElement;
- 
- // REEMPLAZA LA FUNCIÓN _buildBautizoSection() COMPLETA CON ESTA:
+ int _currentPadrinoIndex = 0;
+final CarouselSliderController _carouselController = CarouselSliderController();
 
+
+final List<Map<String, String>> _padrinos = [
+  {
+    'nombre': 'José Víctor Del Villar Flores Lourdes Ramírez Medina',
+    'tipo': 'Padrinos de Anillos',
+  },
+  {
+    'nombre': 'Fernando Quintana Lozano Julia Adriana Martínez Martínez',
+    'tipo': 'Padrinos de Lazo',
+  },
+  {
+    'nombre': 'María Medina Guerrero',
+    'tipo': 'Madrina de Medallas',
+  },
+  {
+    'nombre': 'María Petra Lozano Salcedo',
+    'tipo': 'Madrina de Arras',
+  },
+  {
+    'nombre': 'Dana Paola Del Villar Ramírez',
+    'tipo': 'Madrina de Biblia',
+  },
+  {
+    'nombre': 'Ximena Ramírez Arratia',
+    'tipo': 'Madrina de Cojines',
+  },
+];
+
+Widget _buildPadrinosSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(35),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          FadeInDown(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Nuestros Padrinos',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 32,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFFD946A6),
+                letterSpacing: 1,
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 15),
+          
+          // Línea decorativa superior
+          Container(
+            height: 2,
+            width: 60,
+            color: const Color(0xFFD946A6),
+          ),
+          
+          const SizedBox(height: 25),
+          
+          ZoomIn(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 1200),
+            child: Row(
+              children: [
+                // FLECHA IZQUIERDA
+                _buildSideArrowButton(
+                  icon: Icons.chevron_left,
+                  onPressed: () => _carouselController.previousPage(
+                    duration: const Duration(milliseconds: 900),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+                
+                const SizedBox(width: 8),
+                
+                // CARRUSEL
+                Expanded(
+                  child: CarouselSlider.builder(
+                    carouselController: _carouselController,
+                    itemCount: _padrinos.length,
+                    itemBuilder: (context, index, realIndex) {
+                      return _buildPadrinoCarouselCard(
+                        _padrinos[index]['nombre']!,
+                        _padrinos[index]['tipo']!,
+                        index,
+                      );
+                    },
+                    options: CarouselOptions(
+                      height: 300,
+                      viewportFraction: 0.92,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.15,
+                      enableInfiniteScroll: true,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(milliseconds: 4500),
+                      autoPlayAnimationDuration: const Duration(milliseconds: 1500),
+                      autoPlayCurve: Curves.easeInOutCubic,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentPadrinoIndex = index;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(width: 8),
+                
+                // FLECHA DERECHA
+                _buildSideArrowButton(
+                  icon: Icons.chevron_right,
+                  onPressed: () => _carouselController.nextPage(
+                    duration: const Duration(milliseconds: 900),
+                    curve: Curves.easeInOut,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Indicadores de página
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              _padrinos.length,
+              (index) => AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                height: 8,
+                width: _currentPadrinoIndex == index ? 24 : 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: _currentPadrinoIndex == index
+                      ? const Color(0xFFD946A6)
+                      : const Color(0xFFD946A6).withOpacity(0.3),
+                  boxShadow: _currentPadrinoIndex == index
+                      ? [
+                          BoxShadow(
+                            color: const Color(0xFFD946A6).withOpacity(0.4),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildSideArrowButton({
+  required IconData icon,
+  required VoidCallback onPressed,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: const Color(0xFFD946A6),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFFD946A6).withOpacity(0.3),
+          blurRadius: 8,
+          spreadRadius: 0,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(20),
+        splashColor: Colors.white.withOpacity(0.3),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 18,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 5),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(25),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFFD946A6).withOpacity(0.15),
+          blurRadius: 20,
+          spreadRadius: 2,
+          offset: const Offset(0, 10),
+        ),
+      ],
+      border: Border.all(
+        color: const Color(0xFFD946A6).withOpacity(0.2),
+        width: 2,
+      ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: Padding(
+        padding: const EdgeInsets.all(30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Badge del tipo de padrino
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFD946A6),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFD946A6).withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.workspace_premium,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      tipo,
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 25),
+            
+            // Línea decorativa
+            Container(
+              height: 1,
+              width: 40,
+              color: const Color(0xFFD946A6).withOpacity(0.4),
+            ),
+            
+            const SizedBox(height: 25),
+            
+            // Nombre del padrino
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFAF9F8),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: const Color(0xFFD946A6).withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.person_outline,
+                    color: const Color(0xFFD946A6).withOpacity(0.6),
+                    size: 28,
+                  ),
+                  Text(
+                    nombre,
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade800,
+                      height: 1.4,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+ 
 Widget _buildBautizoSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
@@ -1552,69 +1876,6 @@ Widget _buildPadresSection() {
   );
 }
 
-Widget _buildPadrinosSection() {
-  return FadeInUp(
-    duration: const Duration(milliseconds: 1000),
-    delay: const Duration(milliseconds: 200),
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.pink.shade50, Colors.purple.shade50],
-        ),
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Spin(
-            duration: const Duration(milliseconds: 2000),
-            child: Icon(Icons.stars, color: const Color(0xFFD946A6), size: 50),
-          ),
-          const SizedBox(height: 20),
-          FadeInDown(
-            duration: const Duration(milliseconds: 800),
-            delay: const Duration(milliseconds: 300),
-            child: Text(
-              'Nuestros Padrinos',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 28,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFFD946A6),
-              ),
-            ),
-          ),
-          const SizedBox(height: 25),
-          SlideInLeft(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 500),
-            child: _buildPadrinoCard('Ma. Elena Ramírez Medina'),
-          ),
-          const SizedBox(height: 15),
-          SlideInRight(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 700),
-            child: _buildPadrinoCard('Abigail Paloma Vera'),
-          ), const SizedBox(height: 25),
-          SlideInLeft(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 500),
-            child: _buildPadrinoCard('Augusto Balderas Ramírez'),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
 Widget _buildItinerarioSection() {
   return FadeInUp(
@@ -1805,33 +2066,6 @@ Widget _buildPadreItem(String titulo, List<String> nombres, IconData icono) {
   );
 }
 
-Widget _buildPadrinoCard(String nombre) {
-  return Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(18),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
-      border: Border.all(color: const Color(0xFFD946A6), width: 2),
-    ),
-    child: Row(
-      children: [
-        Icon(Icons.workspace_premium, color: const Color(0xFFD946A6), size: 28),
-        const SizedBox(width: 15),
-        Expanded(
-          child: Text(
-            nombre,
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey.shade800,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
 
 Widget _buildEventoCard(String hora, String titulo, String lugar, String detalle, 
                         IconData icono, Color color, String? mapsUrl) {
@@ -2759,7 +2993,6 @@ Future<void> _cargarDatosInvitacion(String invitacionId) async {
     );
   }
 }
-
 class TornPaperPainter extends CustomPainter {
   final bool isTop;
   
@@ -2801,6 +3034,49 @@ class TornPaperPainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
   
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+// AGREGA ESTA CLASE AQUÍ
+class ElegantPatternPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFFD946A6).withOpacity(0.03)
+      ..style = PaintingStyle.fill;
+
+    // Círculos decorativos
+    canvas.drawCircle(
+      Offset(size.width * 0.15, size.height * 0.2),
+      30,
+      paint,
+    );
+    
+    canvas.drawCircle(
+      Offset(size.width * 0.85, size.height * 0.8),
+      25,
+      paint,
+    );
+    
+    // Líneas diagonales sutiles
+    final linePaint = Paint()
+      ..color = const Color(0xFFD946A6).withOpacity(0.05)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+    
+    final path = Path();
+    path.moveTo(0, size.height * 0.3);
+    path.quadraticBezierTo(
+      size.width * 0.5,
+      size.height * 0.25,
+      size.width,
+      size.height * 0.3,
+    );
+    
+    canvas.drawPath(path, linePaint);
+  }
+
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
