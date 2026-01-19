@@ -5,7 +5,7 @@ const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"assets/AssetManifest.bin": "3f2606ae2c6a22c2e99b4974335a17d7",
 "assets/AssetManifest.bin.json": "a4429a815d3226009c0ec06fdf496d6d",
-"assets/assets/1.jpeg": "0937fbf2a9281ad5c63dd625da77b1f7",
+"assets/assets/1.jpeg": "21d156cf9d7704281809113fffd4010b",
 "assets/assets/2.jpeg": "0dd3139e34340ba5f576dd37ad0cbb0a",
 "assets/assets/3.jpeg": "55688950429494101e6b9b8ea409b364",
 "assets/assets/AYUDA.png": "8abc7a251dc5d9d1125966c16a8fd08d",
@@ -72,7 +72,7 @@ const RESOURCES = {"assets/AssetManifest.bin": "3f2606ae2c6a22c2e99b4974335a17d7
 "canvaskit/skwasm_heavy.wasm": "b0be7910760d205ea4e011458df6ee01",
 "favicon.png": "28e9c6457fa81a39b3ae68fa073fd333",
 "flutter.js": "24bc71911b75b5f8135c949e27a2984e",
-"flutter_bootstrap.js": "a6277565dc4347ff5b57cea756e4c97b",
+"flutter_bootstrap.js": "0a2379c16c8109cc7e7d506e1af1e958",
 "icons/Icon-192.png": "e9004f2757208aba13e21d95aa3b52cc",
 "icons/Icon-512.png": "858d41a2a4c1a16226e7ba8fe19da8eb",
 "icons/Icon-maskable-192.png": "e9004f2757208aba13e21d95aa3b52cc",
