@@ -38,41 +38,13 @@ bool _musicLoading = true;
  int _currentPadrinoIndex = 0;
 final CarouselSliderController _carouselController = CarouselSliderController();
 
-
-final List<Map<String, String>> _padrinos = [
-  {
-    'nombre': 'José Víctor Del Villar Flores Lourdes Ramírez Medina',
-    'tipo': 'Padrinos de Anillos',
-  },
-  {
-    'nombre': 'Fernando Quintana Lozano Julia Adriana Martínez Martínez',
-    'tipo': 'Padrinos de Lazo',
-  },
-  {
-    'nombre': 'María Medina Guerrero',
-    'tipo': 'Madrina de Medallas',
-  },
-  {
-    'nombre': 'María Petra Lozano Salcedo',
-    'tipo': 'Madrina de Arras',
-  },
-  {
-    'nombre': 'Dana Paola Del Villar Ramírez',
-    'tipo': 'Madrina de Biblia',
-  },
-  {
-    'nombre': 'Ximena Ramírez Arratia',
-    'tipo': 'Madrina de Cojines',
-  },
-];
-
 Widget _buildPadrinosSection() {
   return FadeInUp(
     duration: const Duration(milliseconds: 1000),
     delay: const Duration(milliseconds: 200),
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(35),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30),
@@ -92,11 +64,12 @@ Widget _buildPadrinosSection() {
             child: Text(
               'Nuestros Padrinos',
               style: GoogleFonts.playfairDisplay(
-                fontSize: 32,
+                fontSize: 28,
                 fontWeight: FontWeight.w700,
                 color: const Color(0xFFD946A6),
                 letterSpacing: 1,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
           
@@ -111,68 +84,40 @@ Widget _buildPadrinosSection() {
           
           const SizedBox(height: 25),
           
+          // CARRUSEL SIN FLECHAS LATERALES (más espacio para móvil)
           ZoomIn(
             duration: const Duration(milliseconds: 1200),
             delay: const Duration(milliseconds: 1200),
-            child: Row(
-              children: [
-                // FLECHA IZQUIERDA
-                _buildSideArrowButton(
-                  icon: Icons.chevron_left,
-                  onPressed: () => _carouselController.previousPage(
-                    duration: const Duration(milliseconds: 900),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                
-                const SizedBox(width: 8),
-                
-                // CARRUSEL
-                Expanded(
-                  child: CarouselSlider.builder(
-                    carouselController: _carouselController,
-                    itemCount: _padrinos.length,
-                    itemBuilder: (context, index, realIndex) {
-                      return _buildPadrinoCarouselCard(
-                        _padrinos[index]['nombre']!,
-                        _padrinos[index]['tipo']!,
-                        index,
-                      );
-                    },
-                    options: CarouselOptions(
-                      height: 300,
-                      viewportFraction: 0.92,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.15,
-                      enableInfiniteScroll: true,
-                      autoPlay: true,
-                      autoPlayInterval: const Duration(milliseconds: 4500),
-                      autoPlayAnimationDuration: const Duration(milliseconds: 1500),
-                      autoPlayCurve: Curves.easeInOutCubic,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _currentPadrinoIndex = index;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(width: 8),
-                
-                // FLECHA DERECHA
-                _buildSideArrowButton(
-                  icon: Icons.chevron_right,
-                  onPressed: () => _carouselController.nextPage(
-                    duration: const Duration(milliseconds: 900),
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-              ],
+            child: CarouselSlider.builder(
+              carouselController: _carouselController,
+              itemCount: _padrinos.length,
+              itemBuilder: (context, index, realIndex) {
+                return _buildPadrinoCarouselCard(
+                  _padrinos[index]['nombre']!,
+                  _padrinos[index]['tipo']!,
+                  index,
+                );
+              },
+              options: CarouselOptions(
+                height: 320, // Aumentado para móvil
+                viewportFraction: 0.85, // Más espacio en móvil
+                enlargeCenterPage: true,
+                enlargeFactor: 0.2,
+                enableInfiniteScroll: true,
+                autoPlay: true,
+                autoPlayInterval: const Duration(milliseconds: 4500),
+                autoPlayAnimationDuration: const Duration(milliseconds: 1500),
+                autoPlayCurve: Curves.easeInOutCubic,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentPadrinoIndex = index;
+                  });
+                },
+              ),
             ),
           ),
           
-          const SizedBox(height: 30),
+          const SizedBox(height: 25),
           
           // Indicadores de página
           Row(
@@ -202,51 +147,38 @@ Widget _buildPadrinosSection() {
               ),
             ),
           ),
+          
+          const SizedBox(height: 20),
+          
+          // FLECHAS DE NAVEGACIÓN ABAJO (mejor para móvil)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildNavigationButton(
+                icon: Icons.chevron_left,
+                onPressed: () => _carouselController.previousPage(
+                  duration: const Duration(milliseconds: 900),
+                  curve: Curves.easeInOut,
+                ),
+              ),
+              const SizedBox(width: 40),
+              _buildNavigationButton(
+                icon: Icons.chevron_right,
+                onPressed: () => _carouselController.nextPage(
+                  duration: const Duration(milliseconds: 900),
+                  curve: Curves.easeInOut,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     ),
   );
 }
-
-Widget _buildSideArrowButton({
-  required IconData icon,
-  required VoidCallback onPressed,
-}) {
-  return Container(
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: const Color(0xFFD946A6),
-      boxShadow: [
-        BoxShadow(
-          color: const Color(0xFFD946A6).withOpacity(0.3),
-          blurRadius: 8,
-          spreadRadius: 0,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    ),
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(20),
-        splashColor: Colors.white.withOpacity(0.3),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 18,
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
 Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
   return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 5),
+    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(25),
@@ -266,13 +198,13 @@ Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
     child: ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: Padding(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Badge del tipo de padrino
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: const Color(0xFFD946A6),
                 borderRadius: BorderRadius.circular(20),
@@ -287,29 +219,31 @@ Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.workspace_premium,
                     color: Colors.white,
-                    size: 18,
+                    size: 16,
                   ),
                   const SizedBox(width: 8),
                   Flexible(
                     child: Text(
                       tipo,
                       style: GoogleFonts.poppins(
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                         letterSpacing: 0.5,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
             ),
             
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             
             // Línea decorativa
             Container(
@@ -318,38 +252,48 @@ Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
               color: const Color(0xFFD946A6).withOpacity(0.4),
             ),
             
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             
             // Nombre del padrino
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFAF9F8),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: const Color(0xFFD946A6).withOpacity(0.2),
-                  width: 1,
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFAF9F8),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: const Color(0xFFD946A6).withOpacity(0.2),
+                    width: 1,
+                  ),
                 ),
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.person_outline,
-                    color: const Color(0xFFD946A6).withOpacity(0.6),
-                    size: 28,
-                  ),
-                  Text(
-                    nombre,
-                    style: GoogleFonts.playfairDisplay(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade800,
-                      height: 1.4,
-                      letterSpacing: 0.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person_outline,
+                      color: const Color(0xFFD946A6).withOpacity(0.6),
+                      size: 24,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          nombre,
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade800,
+                            height: 1.3,
+                            letterSpacing: 0.3,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 4,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -358,6 +302,72 @@ Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
     ),
   );
 }
+Widget _buildNavigationButton({
+  required IconData icon,
+  required VoidCallback onPressed,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: const Color(0xFFD946A6),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFFD946A6).withOpacity(0.3),
+          blurRadius: 12,
+          spreadRadius: 1,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(30),
+        splashColor: Colors.white.withOpacity(0.3),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 24,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
+final List<Map<String, String>> _padrinos = [
+  {
+    'nombre': 'José Víctor Del Villar Flores Lourdes Ramírez Medina',
+    'tipo': 'Padrinos de Anillos',
+  },
+  {
+    'nombre': 'Fernando Quintana Lozano Julia Adriana Martínez Martínez',
+    'tipo': 'Padrinos de Lazo',
+  },
+  {
+    'nombre': 'María Medina Guerrero',
+    'tipo': 'Madrina de Medallas',
+  },
+  {
+    'nombre': 'María Petra Lozano Salcedo',
+    'tipo': 'Madrina de Arras',
+  },
+  {
+    'nombre': 'Dana Paola Del Villar Ramírez',
+    'tipo': 'Madrina de Biblia',
+  },
+  {
+    'nombre': 'Ximena Ramírez Arratia',
+    'tipo': 'Madrina de Cojines',
+  },
+];
+
+
+
 
  
 Widget _buildBautizoSection() {
