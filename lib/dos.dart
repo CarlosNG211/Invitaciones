@@ -309,14 +309,6 @@ final List<Map<String, String>> _padrinos = [
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.person_outline,
-                      color: esVelacion
-                          ? Color(0xFFD946A6).withOpacity(0.3)
-                          : const Color(0xFFD946A6).withOpacity(0.6),
-                      size: esVelacion ? 28 : 24,
-                    ),
-                    const SizedBox(height: 10),
                     Flexible(
                       child: SingleChildScrollView(
                         child: Text(
