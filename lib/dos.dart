@@ -40,6 +40,310 @@ final CarouselSliderController _carouselController = CarouselSliderController();
 int _currentPadrinoEmilyIndex = 0;
 final CarouselSliderController _carouselEmilyController = CarouselSliderController();
 
+final List<Map<String, String>> _padrinos = [
+  {
+    'nombre': 'María Elena Ramírez Medina',
+    'tipo': 'Madrina de Velación',
+    'icono': 'candle', // Icono especial para velación
+  },
+  {
+    'nombre': 'Abigail Paloma Verá Franco y Augusto Balderas Ramírez',
+    'tipo': 'Padrinos de Velación',
+    'icono': 'candle', // Icono especial para velación
+  },
+  {
+    'nombre': 'José Víctor Del Villar Flores Lourdes Ramírez Medina',
+    'tipo': 'Padrinos de Anillos',
+    'icono': 'ring',
+  },
+  {
+    'nombre': 'Fernando Quintana Lozano Julia Adriana Martínez Martínez',
+    'tipo': 'Padrinos de Lazo',
+    'icono': 'lazo',
+  },
+  {
+    'nombre': 'María Medina Guerrero',
+    'tipo': 'Madrina de Medallas',
+    'icono': 'medal',
+  },
+  {
+    'nombre': 'María Petra Lozano Salcedo',
+    'tipo': 'Madrina de Arras',
+    'icono': 'coins',
+  },
+  {
+    'nombre': 'Dana Paola Del Villar Ramírez',
+    'tipo': 'Madrina de Biblia',
+    'icono': 'bible',
+  },
+  {
+    'nombre': 'Ximena Ramírez Arratia',
+    'tipo': 'Madrina de Cojines',
+    'icono': 'pillow',
+  },
+];Widget _buildPadresSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          BounceInDown(
+            duration: const Duration(milliseconds: 1200),
+            child: Icon(Icons.family_restroom, color: const Color(0xFFD946A6), size: 50),
+          ),
+          const SizedBox(height: 20),
+          FadeInDown(
+            duration: const Duration(milliseconds: 800),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'Con la Bendición de Nuestros Padres',
+              style: GoogleFonts.playfairDisplay(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFFD946A6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 30),
+          SlideInLeft(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: _buildPadreItem('Padres de la Novia', [
+              'Lourdes Ramírez Medina',
+              'José Víctor Del Villar Flores',
+            ], Icons.people),
+          ),
+          const SizedBox(height: 25),
+          SlideInRight(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: _buildPadreItem('Padres del Novio', [
+              'Maria Petra Lozano Salcedo',
+              '† Arturo Eduardo Quintana Briseño',
+            ], Icons.people_outline),
+          ),
+        ],
+      ),
+    ),
+  );
+}IconData _getIconForPadrino(String tipo) {
+  switch (tipo) {
+    case 'candle':
+      return Icons.local_fire_department; // Vela/llama para velación
+    case 'ring':
+      return Icons.favorite; // Anillos
+    case 'lazo':
+      return Icons.link; // Lazo
+    case 'medal':
+      return Icons.military_tech; // Medalla
+    case 'coins':
+      return Icons.monetization_on; // Arras/monedas
+    case 'bible':
+      return Icons.menu_book; // Biblia
+    case 'pillow':
+      return Icons.airline_seat_individual_suite; // Cojín
+    default:
+      return Icons.workspace_premium;
+  }
+}Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
+  final icono = _padrinos[index]['icono'] ?? 'default';
+  final esVelacion = icono == 'candle';
+  
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+    decoration: BoxDecoration(
+      gradient: esVelacion
+          ? LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 255, 221, 243).withOpacity(0.3),
+                Color.fromARGB(255, 255, 174, 227).withOpacity(0.3)
+              ],
+            )
+          : null,
+      color: esVelacion ? null : Colors.white,
+      borderRadius: BorderRadius.circular(25),
+      boxShadow: [
+        BoxShadow(
+          color: esVelacion 
+              ? Color.fromARGB(255, 255, 197, 235).withOpacity(0.3)
+              : const Color(0xFFD946A6).withOpacity(0.15),
+          blurRadius: esVelacion ? 25 : 20,
+          spreadRadius: esVelacion ? 3 : 2,
+          offset: const Offset(0, 10),
+        ),
+      ],
+      border: Border.all(
+        color: esVelacion
+            ? Color(0xFFD946A6).withOpacity(0.3)
+            : const Color(0xFFD946A6).withOpacity(0.2),
+        width: esVelacion ? 3 : 2,
+      ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 20, 
+          vertical: esVelacion ? 30 : 25,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Badge del tipo de padrino (más grande para velación)
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: esVelacion ? 20 : 16, 
+                vertical: esVelacion ? 12 : 10,
+              ),
+              decoration: BoxDecoration(
+                gradient: esVelacion
+                    ? LinearGradient(
+                        colors: [Color(0xFFD946A6).withOpacity(0.3),Color(0xFFD946A6).withOpacity(0.3)],
+                      )
+                    : LinearGradient(
+                        colors: [const Color(0xFFD946A6), const Color(0xFFC535A0)],
+                      ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: (esVelacion ? Color(0xFFD946A6) : const Color(0xFFD946A6))
+                        .withOpacity(0.4),
+                    blurRadius: esVelacion ? 15 : 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    _getIconForPadrino(icono),
+                    color: Colors.white,
+                    size: esVelacion ? 20 : 16,
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      tipo,
+                      style: GoogleFonts.poppins(
+                        fontSize: esVelacion ? 13 : 12,
+                        fontWeight: esVelacion ? FontWeight.w700 : FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            SizedBox(height: esVelacion ? 25 : 20),
+            
+            // Línea decorativa
+            Container(
+              height: esVelacion ? 2 : 1,
+              width: esVelacion ? 50 : 40,
+              decoration: BoxDecoration(
+                gradient: esVelacion
+                    ? LinearGradient(
+                        colors: [Color(0xFFD946A6).withOpacity(0.3), Color(0xFFD946A6).withOpacity(0.3)],
+                      )
+                    : null,
+                color: esVelacion ? null : const Color(0xFFD946A6).withOpacity(0.4),
+              ),
+            ),
+            
+            SizedBox(height: esVelacion ? 25 : 20),
+            
+            // Nombre del padrino
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15, 
+                  vertical: esVelacion ? 22 : 18,
+                ),
+                decoration: BoxDecoration(
+                  gradient: esVelacion
+                      ? LinearGradient(
+                          colors: [Colors.white, const Color.fromARGB(255, 255, 255, 255)],
+                        )
+                      : null,
+                  color: esVelacion ? null : const Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: esVelacion
+                        ? Color(0xFFD946A6).withOpacity(0.3)
+                        : const Color(0xFFD946A6).withOpacity(0.2),
+                    width: esVelacion ? 2 : 1,
+                  ),
+                  boxShadow: esVelacion
+                      ? [
+                          BoxShadow(
+                            color: Color(0xFFD946A6).withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person_outline,
+                      color: esVelacion
+                          ? Color(0xFFD946A6).withOpacity(0.3)
+                          : const Color(0xFFD946A6).withOpacity(0.6),
+                      size: esVelacion ? 28 : 24,
+                    ),
+                    const SizedBox(height: 10),
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Text(
+                          nombre,
+                          style: GoogleFonts.playfairDisplay(
+                            fontSize: esVelacion ? 16 : 15,
+                            fontWeight: esVelacion ? FontWeight.w700 : FontWeight.w600,
+                            color: Colors.grey.shade800,
+                            height: 1.3,
+                            letterSpacing: 0.3,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 4,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 Widget _buildHeroSection() {
   return Container(
     height: 550,
@@ -1094,132 +1398,6 @@ Widget _buildPadrinosSection() {
     ),
   );
 }
-Widget _buildPadrinoCarouselCard(String nombre, String tipo, int index) {
-  return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(25),
-      boxShadow: [
-        BoxShadow(
-          color: const Color(0xFFD946A6).withOpacity(0.15),
-          blurRadius: 20,
-          spreadRadius: 2,
-          offset: const Offset(0, 10),
-        ),
-      ],
-      border: Border.all(
-        color: const Color(0xFFD946A6).withOpacity(0.2),
-        width: 2,
-      ),
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(25),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Badge del tipo de padrino
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFFD946A6),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFD946A6).withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.workspace_premium,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      tipo,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 0.5,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Línea decorativa
-            Container(
-              height: 1,
-              width: 40,
-              color: const Color(0xFFD946A6).withOpacity(0.4),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Nombre del padrino
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFAF9F8),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: const Color(0xFFD946A6).withOpacity(0.2),
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.person_outline,
-                      color: const Color(0xFFD946A6).withOpacity(0.6),
-                      size: 24,
-                    ),
-                    const SizedBox(height: 10),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Text(
-                          nombre,
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade800,
-                            height: 1.3,
-                            letterSpacing: 0.3,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 4,
-                          overflow: TextOverflow.visible,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
 Widget _buildNavigationButton({
   required IconData icon,
   required VoidCallback onPressed,
@@ -1257,38 +1435,6 @@ Widget _buildNavigationButton({
 }
 
 
-final List<Map<String, String>> _padrinos = [
-  {
-    'nombre': 'José Víctor Del Villar Flores Lourdes Ramírez Medina',
-    'tipo': 'Padrinos de Anillos',
-  },
-  {
-    'nombre': 'Fernando Quintana Lozano Julia Adriana Martínez Martínez',
-    'tipo': 'Padrinos de Lazo',
-  },
-  {
-    'nombre': 'María Medina Guerrero',
-    'tipo': 'Madrina de Medallas',
-  },
-  {
-    'nombre': 'María Petra Lozano Salcedo',
-    'tipo': 'Madrina de Arras',
-  },
-  {
-    'nombre': 'Dana Paola Del Villar Ramírez',
-    'tipo': 'Madrina de Biblia',
-  },
-  {
-    'nombre': 'Ximena Ramírez Arratia',
-    'tipo': 'Madrina de Cojines',
-  },
-];
-
-
-
-
-
-// 3. AGREGAR NUEVA FUNCIÓN _buildFooter()
 Widget _buildFooter() {
   return Container(
     width: double.infinity,
@@ -1487,7 +1633,6 @@ void _toggleMusic() {
                 ),
               ],
             ),
-            backgroundColor: Colors.orange.shade700,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
@@ -2165,68 +2310,6 @@ Widget _buildNoviosSection() {
                 ),
               ),
             ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildPadresSection() {
-  return FadeInUp(
-    duration: const Duration(milliseconds: 1000),
-    delay: const Duration(milliseconds: 200),
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          BounceInDown(
-            duration: const Duration(milliseconds: 1200),
-            child: Icon(Icons.family_restroom, color: const Color(0xFFD946A6), size: 50),
-          ),
-          const SizedBox(height: 20),
-          FadeInDown(
-            duration: const Duration(milliseconds: 800),
-            delay: const Duration(milliseconds: 300),
-            child: Text(
-              'Con la Bendición de Nuestros Padres',
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFFD946A6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 30),
-          SlideInLeft(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 500),
-            child: _buildPadreItem('Padres de la Novia', [
-              'Lourdes Ramírez Medina',
-              'José Víctor Del Villar Flores',
-            ], Icons.people),
-          ),
-          const SizedBox(height: 25),
-          SlideInRight(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 700),
-            child: _buildPadreItem('Padres del Novio', [
-              'Maria Petra Lozano Salcedo',
-              'Arturo Eduardo Quintana Briseño',
-            ], Icons.people_outline),
           ),
         ],
       ),
