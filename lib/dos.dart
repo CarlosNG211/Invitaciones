@@ -37,6 +37,924 @@ bool _musicLoading = true;
  html.AudioElement? _audioElement;
  int _currentPadrinoIndex = 0;
 final CarouselSliderController _carouselController = CarouselSliderController();
+int _currentPadrinoEmilyIndex = 0;
+final CarouselSliderController _carouselEmilyController = CarouselSliderController();
+
+Widget _buildHeroSection() {
+  return Container(
+    height: 550,
+    decoration: const BoxDecoration(
+      color: Color(0xFFE8E4DC),
+      image: DecorationImage(
+        image: AssetImage('assets/1.jpeg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.black.withOpacity(0.4),
+            Colors.transparent,
+            const Color(0xFFF5F3EF),
+          ],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FadeInDown(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 300),
+            child: Text(
+              'NOS CASAMOS',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 14,
+                letterSpacing: 4,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 600),
+            child: Text(
+              'Itzel & Oscar',
+              style: GoogleFonts.greatVibes(
+                color: Colors.white,
+                fontSize: 60,
+                fontWeight: FontWeight.w400,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 750),
+            child: Text(
+              'Y BAUTIZO DE',
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 12,
+                letterSpacing: 3,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 850),
+            child: Text(
+              'Emily Catalyna',
+              style: GoogleFonts.greatVibes(
+                color: Colors.white,
+                fontSize: 48,
+                fontWeight: FontWeight.w400,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0,
+                    color: Colors.black.withOpacity(0.5),
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeInUp(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 900),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.95),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                '14 • FEBRERO • 2026',
+                style: GoogleFonts.poppins(
+                  color: const Color(0xFFD946A6),
+                  fontSize: 16,
+                  letterSpacing: 3,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          // FRASE ROMÁNTICA
+          FadeInUp(
+            duration: const Duration(milliseconds: 1500),
+            delay: const Duration(milliseconds: 1000),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                '"De nadie seré, solo de ti hasta que mis huesos se vuelvan cenizas y mi corazón deje de latir"',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w400,
+                  height: 1.6,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 8.0,
+                      color: Colors.black.withOpacity(0.6),
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 40),
+          CustomPaint(
+            size: const Size(double.infinity, 40),
+            painter: TornPaperPainter(),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildFamilyInvitationSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.white, const Color(0xFFFAF9F8)],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Icono decorativo superior
+          Bounce(
+            duration: const Duration(milliseconds: 1500),
+            child: Icon(
+              Icons.favorite_border,
+              color: const Color(0xFFD946A6),
+              size: 40,
+            ),
+          ),
+          
+          const SizedBox(height: 25),
+          
+          // IMAGEN RECTANGULAR 3.jpeg
+          ZoomIn(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 300),
+            child: Container(
+              width: double.infinity,
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/3.jpeg',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.pink.shade100, Colors.purple.shade100],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.family_restroom,
+                          color: const Color(0xFFD946A6),
+                          size: 80,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Texto decorativo
+          FadeInUp(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 500),
+            child: Column(
+              children: [
+                Text(
+                  'Nuestra Familia',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFFD946A6),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  height: 2,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFFD946A6),
+                        Colors.pink.shade300,
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Text(
+                  'Los Invita a Celebrar',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    color: Colors.grey.shade700,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 25),
+          
+          // Decoración adicional
+          SlideInUp(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              decoration: BoxDecoration(
+                color: Colors.pink.shade50,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: const Color(0xFFD946A6).withOpacity(0.3),
+                  width: 2,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.celebration, color: const Color(0xFFD946A6), size: 22),
+                  const SizedBox(width: 12),
+                  Flexible(
+                    child: Text(
+                      'Este momento especial con nosotros',
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        color: Colors.grey.shade700,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Icon(Icons.celebration, color: const Color(0xFFD946A6), size: 22),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFFF5F3EF),
+    body: Stack(
+      children: [
+        // CONTENIDO PRINCIPAL
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildHeroSection(),
+              _buildCountdown(),
+              _buildFamilyInvitationSection(), // ← NUEVA SECCIÓN AGREGADA AQUÍ
+              Container(height: 30),
+              _buildNoviosSection(),
+              Container(height: 50),
+              _buildPadresSection(),
+              _buildDivider(),
+              _buildPadrinosSection(),
+              _buildDivider(),
+              _buildItinerarioSection(),
+              _buildDivider(),
+              _buildCodigoVestimenta(),
+              _buildDivider(),
+              _buildConfirmacionSection(),
+              if (_canUploadPhotos) _buildFotosSection(),
+              _buildDivider(),
+              _buildBautizoSection(),
+              const SizedBox(height: 20),
+              _buildFooter(),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
+        
+        // BOTÓN CON IMAGEN PLIX
+        Positioned(
+          bottom: 20,
+          right: 20,
+          child: GestureDetector(
+            onTap: _mostrarDialogoCodigo,
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/plix.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
+        
+        // BOTÓN DE MÚSICA
+        Positioned(
+          bottom: 20,
+          left: 20,
+          child: GestureDetector(
+            onTap: () {
+              if (_debugMode) print('Botón presionado - Loading: $_musicLoading, Started: $_musicStarted, Playing: $_isMusicPlaying');
+              _toggleMusic();
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: EdgeInsets.symmetric(
+                horizontal: _musicStarted ? 12 : 15,
+                vertical: _musicStarted ? 10 : 12,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: _musicLoading 
+                    ? [Colors.grey.shade400, Colors.grey.shade500]
+                    : [
+                        const Color(0xFFD946A6),
+                        Colors.pink.shade300,
+                      ],
+                ),
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: (_musicLoading ? Colors.grey : const Color(0xFFD946A6))
+                        .withOpacity(0.4),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_musicLoading)
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  else
+                    Icon(
+                      !_musicStarted 
+                          ? Icons.music_note 
+                          : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _musicLoading
+                        ? 'Cargando...'
+                        : (!_musicStarted 
+                            ? 'Reproduce nuestra canción' 
+                            : (_isMusicPlaying ? 'Pausar' : 'Reproducir')),
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+final List<Map<String, String>> _padrinosEmily = [
+  {
+    'nombre': 'Víctor Uriel Del Villar Ramírez',
+    'tipo': 'Padrino de Emily',
+  },
+  {
+    'nombre': 'René Ali López Nieva',
+    'tipo': 'Padrino de Emily',
+  },
+];
+Widget _buildBautizoSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 200),
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.blue.shade50, Colors.purple.shade50],
+        ),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // IMAGEN RECTANGULAR FORMAL
+          Bounce(
+            duration: const Duration(milliseconds: 1500),
+            child: Container(
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/2.jpeg',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.shade100,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.child_care,
+                          color: Colors.blue.shade400,
+                          size: 80,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Nombre de la bebé
+          Container(
+            padding: const EdgeInsets.all(25),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.blue.shade200, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Icon(Icons.favorite, color: Colors.pink.shade300, size: 30),
+                const SizedBox(height: 15),
+                Text(
+                  'Emily Catalyna',
+                  style: GoogleFonts.greatVibes(
+                    fontSize: 38,
+                    color: const Color(0xFFD946A6),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Quintana Del Villar',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey.shade700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          _buildPadrinosEmilyCarousel(),
+          
+          const SizedBox(height: 30),
+          
+          SlideInUp(
+            duration: const Duration(milliseconds: 1000),
+            delay: const Duration(milliseconds: 700),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.blue.shade200, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.blue.shade300, Colors.blue.shade500],
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.withOpacity(0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.access_time,
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '2:00 PM',
+                              style: GoogleFonts.poppins(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFFD946A6),
+                              ),
+                            ),
+                            Text(
+                              'Salón "La Cabaña"',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _abrirMaps('https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7'),
+                      icon: const Icon(Icons.map, size: 18),
+                      label: const Text('VER EN MAPA'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue.shade400,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        elevation: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+// 4. AGREGAR ESTA NUEVA FUNCIÓN PARA EL CARRUSEL DE PADRINOS DE EMILY
+Widget _buildPadrinosEmilyCarousel() {
+  return SlideInUp(
+    duration: const Duration(milliseconds: 1000),
+    delay: const Duration(milliseconds: 500),
+    child: Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.purple.shade50, Colors.pink.shade50],
+        ),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.purple.shade200, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.purple.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Título
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.stars, color: const Color(0xFFD946A6), size: 22),
+              const SizedBox(width: 10),
+              Text(
+                'Padrinos',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFFD946A6),
+                ),
+              ),
+            ],
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // CARRUSEL
+          ZoomIn(
+            duration: const Duration(milliseconds: 1200),
+            delay: const Duration(milliseconds: 600),
+            child: CarouselSlider.builder(
+              carouselController: _carouselEmilyController,
+              itemCount: _padrinosEmily.length,
+              itemBuilder: (context, index, realIndex) {
+                return _buildPadrinoEmilyCard(
+                  _padrinosEmily[index]['nombre']!,
+                  _padrinosEmily[index]['tipo']!,
+                  index,
+                );
+              },
+              options: CarouselOptions(
+                height: 200,
+                viewportFraction: 0.85,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.2,
+                enableInfiniteScroll: true,
+                autoPlay: true,
+                autoPlayInterval: const Duration(milliseconds: 4500),
+                autoPlayAnimationDuration: const Duration(milliseconds: 1500),
+                autoPlayCurve: Curves.easeInOutCubic,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentPadrinoEmilyIndex = index;
+                  });
+                },
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Indicadores de página
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              _padrinosEmily.length,
+              (index) => AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                height: 8,
+                width: _currentPadrinoEmilyIndex == index ? 24 : 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: _currentPadrinoEmilyIndex == index
+                      ? const Color(0xFFD946A6)
+                      : const Color(0xFFD946A6).withOpacity(0.3),
+                  boxShadow: _currentPadrinoEmilyIndex == index
+                      ? [
+                          BoxShadow(
+                            color: const Color(0xFFD946A6).withOpacity(0.4),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 15),
+          
+          // FLECHAS DE NAVEGACIÓN
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildNavigationButtonEmily(
+                icon: Icons.chevron_left,
+                onPressed: () => _carouselEmilyController.previousPage(
+                  duration: const Duration(milliseconds: 900),
+                  curve: Curves.easeInOut,
+                ),
+              ),
+              const SizedBox(width: 40),
+              _buildNavigationButtonEmily(
+                icon: Icons.chevron_right,
+                onPressed: () => _carouselEmilyController.nextPage(
+                  duration: const Duration(milliseconds: 900),
+                  curve: Curves.easeInOut,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+// 5. AGREGAR ESTA FUNCIÓN PARA LAS TARJETAS DEL CARRUSEL DE EMILY
+Widget _buildPadrinoEmilyCard(String nombre, String tipo, int index) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.purple.withOpacity(0.15),
+          blurRadius: 15,
+          spreadRadius: 1,
+          offset: const Offset(0, 8),
+        ),
+      ],
+      border: Border.all(
+        color: Colors.purple.shade200,
+        width: 2,
+      ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icono decorativo
+            Icon(
+              Icons.workspace_premium,
+              color: Colors.purple.shade400,
+              size: 30,
+            ),
+            
+            const SizedBox(height: 15),
+            
+            // Nombre del padrino
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Text(
+                    nombre,
+                    style: GoogleFonts.playfairDisplay(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade800,
+                      height: 1.3,
+                      letterSpacing: 0.3,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 4,
+                    overflow: TextOverflow.visible,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+// 6. AGREGAR ESTA FUNCIÓN PARA LOS BOTONES DE NAVEGACIÓN DE EMILY
+Widget _buildNavigationButtonEmily({
+  required IconData icon,
+  required VoidCallback onPressed,
+}) {
+  return Container(
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.purple.shade400,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.purple.withOpacity(0.3),
+          blurRadius: 12,
+          spreadRadius: 1,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(30),
+        splashColor: Colors.white.withOpacity(0.3),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 Widget _buildPadrinosSection() {
   return FadeInUp(
@@ -369,576 +1287,6 @@ final List<Map<String, String>> _padrinos = [
 
 
 
- 
-Widget _buildBautizoSection() {
-  return FadeInUp(
-    duration: const Duration(milliseconds: 1000),
-    delay: const Duration(milliseconds: 200),
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blue.shade50, Colors.purple.shade50],
-        ),
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          // IMAGEN RECTANGULAR FORMAL
-          Bounce(
-            duration: const Duration(milliseconds: 1500),
-            child: Container(
-              width: double.infinity,
-              height: 250,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/2.jpeg',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade100,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.child_care,
-                          color: Colors.blue.shade400,
-                          size: 80,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-          
-          const SizedBox(height: 30),
-          
-          // Nombre de la bebé
-          Container(
-            padding: const EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.blue.shade200, width: 2),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blue.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Icon(Icons.favorite, color: Colors.pink.shade300, size: 30),
-                const SizedBox(height: 15),
-                Text(
-                  'Emily Catalyna',
-                  style: GoogleFonts.greatVibes(
-                    fontSize: 38,
-                    color: const Color(0xFFD946A6),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Quintana Del Villar',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey.shade700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 30),
-          
-          // Padrinos
-          SlideInUp(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 500),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.purple.shade50, Colors.pink.shade50],
-                ),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.purple.shade200, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.purple.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.stars, color: const Color(0xFFD946A6), size: 22),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Padrinos',
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFFD946A6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _buildPadrinoSimple('Víctor Uriel Del Villar Ramírez'),
-                  const SizedBox(height: 12),
-                  _buildPadrinoSimple('René Ali López Nieva'),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          
-          // Información del evento
-          SlideInUp(
-            duration: const Duration(milliseconds: 1000),
-            delay: const Duration(milliseconds: 700),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.blue.shade200, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.blue.shade300, Colors.blue.shade500],
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blue.withOpacity(0.3),
-                              blurRadius: 8,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.access_time,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '2:00 PM',
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFFD946A6),
-                              ),
-                            ),
-                            Text(
-                              'Salón "La Cabaña"',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _abrirMaps('https://maps.app.goo.gl/ecDdwpAtArqD7Ufr7'),
-                      icon: const Icon(Icons.map, size: 18),
-                      label: const Text('VER EN MAPA'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue.shade400,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        elevation: 3,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-// MANTÉN ESTA FUNCIÓN IGUAL (no cambies nada)
-Widget _buildPadrinoSimple(String nombre) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.purple.shade200),
-    ),
-    child: Row(
-      children: [
-        Icon(Icons.workspace_premium, color: Colors.purple.shade400, size: 20),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            nombre,
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              color: Colors.grey.shade800,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-Widget _buildHeroSection() {
-  return Container(
-    height: 550,
-    decoration: const BoxDecoration(
-      color: Color(0xFFE8E4DC),
-      image: DecorationImage(
-        image: AssetImage('assets/1.jpeg'),
-        fit: BoxFit.cover,
-      ),
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.black.withOpacity(0.4),
-            Colors.transparent,
-            const Color(0xFFF5F3EF),
-          ],
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FadeInDown(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 300),
-            child: Text(
-              'NOS CASAMOS',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 14,
-                letterSpacing: 4,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1500),
-            delay: const Duration(milliseconds: 600),
-            child: Text(
-              'Itzel & Oscar',
-              style: GoogleFonts.greatVibes(
-                color: Colors.white,
-                fontSize: 60,
-                fontWeight: FontWeight.w400,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 750),
-            child: Text(
-              'Y BAUTIZO DE',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 12,
-                letterSpacing: 3,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1500),
-            delay: const Duration(milliseconds: 850),
-            child: Text(
-              'Emily Catalyna',
-              style: GoogleFonts.greatVibes(
-                color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.w400,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            delay: const Duration(milliseconds: 900),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.95),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                '14 • FEBRERO • 2026',
-                style: GoogleFonts.poppins(
-                  color: const Color(0xFFD946A6),
-                  fontSize: 16,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // FRASE ROMÁNTICA AGREGADA AQUÍ
-          FadeInUp(
-            duration: const Duration(milliseconds: 1500),
-            delay: const Duration(milliseconds: 1000),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                '"De nadie seré, solo de ti hasta que mis huesos se vuelvan cenizas y mi corazón deje de latir"',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w400,
-                  height: 1.6,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 8.0,
-                      color: Colors.black.withOpacity(0.6),
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 40),
-          CustomPaint(
-            size: const Size(double.infinity, 40),
-            painter: TornPaperPainter(),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-// 2. MODIFICAR build() - Cambiar el botón del candado por la imagen
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: const Color(0xFFF5F3EF),
-    body: Stack(
-      children: [
-        // CONTENIDO PRINCIPAL
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeroSection(),
-              _buildCountdown(),
-              _buildNoviosSection(),
-              Container(height: 50),
-              _buildPadresSection(),
-              _buildDivider(),
-              _buildPadrinosSection(),
-              _buildDivider(),
-              _buildItinerarioSection(),
-              _buildDivider(),
-              _buildCodigoVestimenta(),
-              _buildDivider(),
-              _buildConfirmacionSection(),
-              if (_canUploadPhotos) _buildFotosSection(),
-              _buildDivider(),
-              _buildBautizoSection(),
-              const SizedBox(height: 20),
-              _buildFooter(), // FOOTER AGREGADO AQUÍ
-              const SizedBox(height: 40),
-            ],
-          ),
-        ),
-        
-        // BOTÓN CON IMAGEN PLIX (MODIFICADO)
-        Positioned(
-          bottom: 20,
-          right: 20,
-          child: GestureDetector(
-            onTap: _mostrarDialogoCodigo,
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/plix.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        ),
-        
-        // BOTÓN DE MÚSICA
-        Positioned(
-          bottom: 20,
-          left: 20,
-          child: GestureDetector(
-            onTap: () {
-              if (_debugMode) print('Botón presionado - Loading: $_musicLoading, Started: $_musicStarted, Playing: $_isMusicPlaying');
-              _toggleMusic();
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              padding: EdgeInsets.symmetric(
-                horizontal: _musicStarted ? 12 : 15,
-                vertical: _musicStarted ? 10 : 12,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: _musicLoading 
-                    ? [Colors.grey.shade400, Colors.grey.shade500]
-                    : [
-                        const Color(0xFFD946A6),
-                        Colors.pink.shade300,
-                      ],
-                ),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: (_musicLoading ? Colors.grey : const Color(0xFFD946A6))
-                        .withOpacity(0.4),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_musicLoading)
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  else
-                    Icon(
-                      !_musicStarted 
-                          ? Icons.music_note 
-                          : (_isMusicPlaying ? Icons.pause : Icons.play_arrow),
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  const SizedBox(width: 6),
-                  Text(
-                    _musicLoading
-                        ? 'Cargando...'
-                        : (!_musicStarted 
-                            ? 'Reproduce nuestra canción' 
-                            : (_isMusicPlaying ? 'Pausar' : 'Reproducir')),
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
 
 // 3. AGREGAR NUEVA FUNCIÓN _buildFooter()
 Widget _buildFooter() {
@@ -988,7 +1336,7 @@ Widget _buildFooter() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 Text(
-          'Pide tu app o página web ',
+          'Pide tu app o página web +52 7752361570 ',
           style: GoogleFonts.poppins(
             fontSize: 10,
             color: Colors.grey.shade600,
