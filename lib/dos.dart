@@ -2380,7 +2380,7 @@ Widget _buildItinerarioSection() {
             duration: const Duration(milliseconds: 1000),
             delay: const Duration(milliseconds: 900),
             child: _buildEventoCard(
-              '3:00 PM',
+              '5:00 PM',
               'Ceremonia Civil',
               'Salón "La Cabaña"',
               '',
