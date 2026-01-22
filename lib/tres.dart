@@ -19,6 +19,240 @@ class _TresState extends State<Tres> with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> _invitaciones = [];
   late AnimationController _animationController;
   String _filtroEstado = 'Todos'; 
+  void _verDetalles(Map<String, dynamic> invitacion) {
+  final link = 'https://invitaciones-p63yntquw-carlosng211s-projects.vercel.app/#/dos?id=${invitacion['id']}';
+  
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 550),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF7A9B8E).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.person,
+                        color: Color(0xFF7A9B8E),
+                        size: 28,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            invitacion['nombre'],
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2C3E50),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: invitacion['confirmado']
+                                  ? Colors.green.shade50
+                                  : Colors.orange.shade50,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: invitacion['confirmado']
+                                    ? Colors.green.shade300
+                                    : Colors.orange.shade300,
+                              ),
+                            ),
+                            child: Text(
+                              invitacion['confirmado'] ? '✓ Confirmado' : '⏳ Pendiente',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: invitacion['confirmado']
+                                    ? Colors.green.shade700
+                                    : Colors.orange.shade700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+                const Divider(),
+                const SizedBox(height: 20),
+                
+                // Lugares asignados
+                _buildDetalleItem(
+                  Icons.event_seat,
+                  'Lugares asignados',
+                  invitacion['lugaresAsignados'].toString(),
+                  Colors.blue,
+                ),
+                
+                // Lugares confirmados (si ya confirmó)
+                if (invitacion['confirmado'])
+                  _buildDetalleItem(
+                    Icons.check_circle,
+                    'Lugares confirmados',
+                    invitacion['lugaresConfirmados'].toString(),
+                    Colors.green,
+                  ),
+                
+                // Mensaje personalizado de los novios
+                if (invitacion['mensaje'] != null && invitacion['mensaje'].toString().isNotEmpty)
+                  _buildDetalleItem(
+                    Icons.message,
+                    'Mensaje personalizado',
+                    invitacion['mensaje'],
+                    Colors.purple,
+                  ),
+                
+                // ⭐ NUEVO: Mensaje de respuesta del invitado
+                if (invitacion['confirmado'] && 
+                    invitacion['mensajeRespuesta'] != null && 
+                    invitacion['mensajeRespuesta'].toString().isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.pink.shade50, Colors.purple.shade50],
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.pink.shade200, width: 2),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.pink.shade100,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                Icons.favorite,
+                                size: 20,
+                                color: Colors.pink.shade700,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'Mensaje del invitado',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.pink.shade700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            invitacion['mensajeRespuesta'],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontStyle: FontStyle.italic,
+                              color: Color(0xFF2C3E50),
+                              height: 1.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 20),
+                
+                // Enlace de invitación
+                const Text(
+                  'Enlace de invitación',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Color(0xFF2C3E50),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: SelectableText(
+                    link,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF7A9B8E),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: link));
+                      _mostrarSnackBar('¡Enlace copiado!');
+                    },
+                    icon: const Icon(Icons.copy, size: 18),
+                    label: const Text('Copiar Enlace'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF7A9B8E),
+                      side: const BorderSide(color: Color(0xFF7A9B8E), width: 1.5),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cerrar'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
   @override
 Widget build(BuildContext context) {
@@ -237,166 +471,6 @@ Widget build(BuildContext context) {
   );
 }
 
-void _verDetalles(Map<String, dynamic> invitacion) {
-  // Cambiado el formato del link
-   final link = 'https://invitaciones-p63yntquw-carlosng211s-projects.vercel.app/#/dos?id=${invitacion['id']}';
-  
-  showDialog(
-    context: context,
-    builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 550),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF7A9B8E).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Color(0xFF7A9B8E),
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            invitacion['nombre'],
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF2C3E50),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: invitacion['confirmado']
-                                  ? Colors.green.shade50
-                                  : Colors.orange.shade50,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: invitacion['confirmado']
-                                    ? Colors.green.shade300
-                                    : Colors.orange.shade300,
-                              ),
-                            ),
-                            child: Text(
-                              invitacion['confirmado'] ? '✓ Confirmado' : '⏳ Pendiente',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: invitacion['confirmado']
-                                    ? Colors.green.shade700
-                                    : Colors.orange.shade700,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                const Divider(),
-                const SizedBox(height: 20),
-                _buildDetalleItem(
-                  Icons.event_seat,
-                  'Lugares asignados',
-                  invitacion['lugaresAsignados'].toString(),
-                  Colors.blue,
-                ),
-                if (invitacion['confirmado'])
-                  _buildDetalleItem(
-                    Icons.check_circle,
-                    'Lugares confirmados',
-                    invitacion['lugaresConfirmados'].toString(),
-                    Colors.green,
-                  ),
-                if (invitacion['mensaje'].isNotEmpty)
-                  _buildDetalleItem(
-                    Icons.message,
-                    'Mensaje personalizado',
-                    invitacion['mensaje'],
-                    Colors.purple,
-                  ),
-                const SizedBox(height: 20),
-                const Divider(),
-                const SizedBox(height: 20),
-                const Text(
-                  'Enlace de invitación',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Color(0xFF2C3E50),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                  ),
-                  child: SelectableText(
-                    link,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF7A9B8E),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: link));
-                      _mostrarSnackBar('¡Enlace copiado!');
-                    },
-                    icon: const Icon(Icons.copy, size: 18),
-                    label: const Text('Copiar Enlace'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF7A9B8E),
-                      side: const BorderSide(color: Color(0xFF7A9B8E), width: 1.5),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cerrar'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}
   
   @override
   void initState() {
